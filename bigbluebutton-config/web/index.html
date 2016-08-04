@@ -1,119 +1,104 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-    <title>TuberEdu - Web Conferencing</title>
-    <meta name="description" content="TuberEdu enables universities and colleges to deliver a high-quality learning experience to remote students.">
-    <meta name="keywords" content="Web Conferencing, Distance Education, Courses Online, Web Conferencing, Open Source, Desktop Sharing, Video Conferencing, Video Collaboration, Presentation Sharing, Audio Sharing, Voice Collaboration, Public Chat, Webcam Sharing, Annotation, Whiteboard, Integrated Voice Over IP, Collaboration Software, Online Collaboration, Collaborative Learning, Virtual Classroom">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" href="images/favicon.png">
+        <title>TuberEdu - Web Conferencing</title>
+        <meta name="description" content="TuberEdu enables universities and colleges to deliver a high-quality learning experience to remote students.">
+        <meta name="keywords" content="Web Conferencing, Distance Education, Courses Online, Web Conferencing, Open Source, Desktop Sharing, Video Conferencing, Video Collaboration, Presentation Sharing, Audio Sharing, Voice Collaboration, Public Chat, Webcam Sharing, Annot\
+                                       ation, Whiteboard, Integrated Voice Over IP, Collaboration Software, Online Collaboration, Collaborative Learning, Virtual Classroom">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="images/favicon.png">
 
 
-    <link rel="stylesheet" href="css/bijou.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-		</head>
-  <body>
-    <div class='main'>
+        <link rel="stylesheet" href="css/bijou.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+    </head>
+    <body>
+        <div class='main'>
 
-    <!-- Github Fork Ribbon -->
-    <a href="https://github.com/john1726/bigbluebutton">
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
-    </a>
+            <!-- Github Fork Ribbon -->
+            <a href="https://github.com/john1726/bigbluebutton">
+                <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+            </a>
 
-    <!-- Header -->
-    <div class='navbar'>
-      <div class='container'>
-        <div class="logo">
-          <img src="images/Tuberedu_Logo2.png" alt="TuberEdu Demo"/>
+            <!-- Header -->
+            <div class='navbar'>
+                <div class='container'>
+                    <div class="logo">
+                        <img src="images/Tuberedu_Logo2.png" alt="TuberEdu Demo"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class='container'>
+
+                <!-- Welcome Message & Login Into Demo -->
+                <div class='row'>
+                    <div class='span five'>
+                        <h2>Welcome</h2>
+                        <p> <a href="http://tuberedu.org/" target="_blank">TuberEdu</a> is a web conferencing system for on-line learning. </p>
+                        <p> We believe that every student with a web browser should have access to a high-quality on-line learning experience </p>
+                        <p> We intend to make that possible with TuberEdu.</p>
+                    </div>
+                    <div class="span one"></div>
+                    <div class='span six'>
+                        <div class='join-metting  pull-right'>
+                            <h4>Try Video Conference</h4>
+                            <p>Join a demo session on this server.</p>
+
+                            <form name="form1" method="GET" onsubmit="return checkform(this);" action="/demo/demo10.jsp">
+                                <input type="text" id="meetingID" required="" name="meetingID" placeholder="Enter Meeting ID" size="29" class="field input-default" autofocus>
+                                <input type="text" id="meta_description" required="" name="meta_description" placeholder="Enter Description" size="29" class="field input-default">
+                                <input type="text" id="meta_email"" required="" name="meta_email"" placeholder="Enter Your Name" size="29" class="field input-default">
+                                <input type="submit" value="Join" class="submit_btn button success large"><br>
+                                <input type="hidden" name="action" value="create">
+                            </form>
+
+                            <a class="watch" href="#video" class="pull-right">New to TuberEdu?  Watch these videos.</a>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <hr class="featurette-divider">
+
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Body -->
-    <div class='container'>
+        <!--  Footer -->
+        <footer>
+            <div class='container'>
 
-      <!-- Welcome Message & Login Into Demo -->
-      <div class='row'>
-        <div class='span five'>
-          <h2>Welcome</h2>
-          <p> <a href="http://tuberedu.org/" target="_blank">TuberEdu</a> is a web conferencing system for on-line learning. </p>
-          <p> We believe that every student with a web browser should have access to a high-quality on-line learning experience </p>
-          <p> We intend to make that possible with TuberEdu.</p>
-        </div>
-				<div class="span one"></div>
-        <div class='span six'>
-          <div class='join-metting  pull-right'>
-            <h4>Try Video Conference</h4>
-            <p>Join a demo session on this server.</p>
-
-            <form name="form1" method="GET" onsubmit="return checkform(this);" action="/demo/demo10.jsp">
-              <input type="text" id="meetingID" required="" name="meetingID" placeholder="Enter Meeting ID" size="29" class="field input-default" autofocus>
-              <input type="text" id="meta_description" required="" name="meta_description" placeholder="Enter Description" size="29" class="field input-default">
-              <input type="text" id="meta_email"" required="" name="meta_email"" placeholder="Enter Your Name" size="29" class="field input-default">
-              <input type="submit" value="Join" class="submit_btn button success large"><br>
-              <input type="hidden" name="action" value="create">
-            </form>
-
-          <a class="watch" href="#video" class="pull-right">New to TuberEdu?  Watch these videos.</a>
-
-          </div>
-
-        </div>
-      </div>
-
-      <hr class="featurette-divider">
-
-      </div>
-    </div>
-
-    <!--  Footer -->
-    <footer>
-      <div class='container'>
-      
-	      <div class="row">
-	      	<div class="span six first">
-		        <p>TuberEdu and the Tuber Edu logo are trademarks of <a href="http://tuberedu.org/">Tuber International Inc.</a></p>	
-	      	</div>	        
-	      	<div class="span six last">
-						<ul>
-							<li>
-								Follow Us:
-							</li>
-							<li><a class="twitter" href="http://www.twitter.com/tuberedu" title="TuberEdu Twitter Page" target="_blank"><i class="fa fa-twitter"></i></a></li>
-							<li><a class="facebook" href="http://www.facebook.com/tuberedu" title="TuberEdu Facebook Page" target="_blank"><i class="fa fa-facebook"></i></a></li>
-							<li><a class="youtube" href="http://www.youtube.com/tuberedushare" title="TuberEdu YouTube Page" target="_blank"><i class="fa fa-youtube"></i> </a></li>
-							<li><a class="google" href="http://google.com/+tuberedu" title="TuberEdu Google Plus" target="_blank"><i class="fa fa-google-plus"></i></a></li>
-						</ul>
-	      	</div>
-	      </div>
-
-              <div class="row">
-                <div class="span six first">
+                <div class="row">
+                    <div class="span six first">
                         <p>TuberEdu and the Tuber Edu logo are trademarks of <a href="http://tuberedu.org/">Tuber International Inc.</a></p>
+                    </div>
+                    <div class="span six last">
+                        <ul>
+                            <li>
+                                Follow Us:
+                            </li>
+                            <li><a class="twitter" href="http://www.twitter.com/tuberedu" title="TuberEdu Twitter Page" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                            <li><a class="facebook" href="http://www.facebook.com/tuberedu" title="TuberEdu Facebook Page" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                            <li><a class="youtube" href="http://www.youtube.com/tuberedushare" title="TuberEdu YouTube Page" target="_blank"><i class="fa fa-youtube"></i> </a></li>
+                            <li><a class="google" href="http://google.com/+tuberedu" title="TuberEdu Google Plus" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="span six last">
-                                                <ul>
-                                                        <li>
-                                                                Follow Us:
-                                                        </li>
-                                                        <li><a class="twitter" href="http://www.twitter.com/tuberedu" title="TuberEdu Twitter Page" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                                                        <li><a class="facebook" href="http://www.facebook.com/tuberedu" title="TuberEdu Facebook Page" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                                                        <li><a class="youtube" href="http://www.youtube.com/tuberedushare" title="TuberEdu YouTube Page" target="_blank"><i class="fa fa-youtube"></i> </a></li>
-                                                        <li><a class="google" href="http://google.com/+tuberedu" title="TuberEdu Google Plus" target="_blank"><i class="fa fa-google-plus"></i></a></li>
-                                                </ul>
-                </div>
-              </div>
 
-	      <div class="row">
-	      	<div class="span twelve center">
-		        <p>Copyright &copy; 2016 BigBlueButton Inc.<br>
-		        <small>Version <a href="http://docs.tuberedu.org/">1.0</a></small>		        
-		        </p>
-	      	</div>
-	      </div>	
-      </div>
-    </footer>
-  </body>
+
+                <div class="row">
+                    <div class="span twelve center">
+                        <p>Copyright &copy; 2016 BigBlueButton Inc.<br>
+                            <small>Version <a href="http://docs.tuberedu.org/">1.0</a></small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
 </html>
