@@ -33,7 +33,7 @@
 	<mate:Listener type="{StopTimerEvent.STOP_TIMER}" method="handleStopTimer" />
 
 	<mx:Script>
-		<![CDATA[
+		<![CDATA[ 
                         import com.hurlant.crypto.symmetric.AESKey;
                         import com.hurlant.crypto.symmetric.DESKey;
                         import com.hurlant.util.Hex;
@@ -48,6 +48,8 @@
                         import flash.events.TimerEvent;
                         import flash.utils.Timer;
 	                import flash.utils.getTimer;
+                        import flash.globalization.LocaleID;
+                        import flash.globalization.DateTimeFormatter;
 
 			import com.asfusion.mate.events.Dispatcher;
 			
@@ -60,6 +62,8 @@
 			import mx.events.MenuEvent;
 			import mx.managers.PopUpManager;
 			
+	                import org.bigbluebutton.main.api.JSLog;
+                        import org.as3commons.logging.util.jsonXify;
 			import org.as3commons.logging.api.ILogger;
 			import org.as3commons.logging.api.getClassLogger;
 			import org.bigbluebutton.common.IBbbModuleWindow;
@@ -79,23 +83,31 @@
 
 			private var dispatcher:Dispatcher;
 
-                        private const TIMER_INTERVAL:int = 50;
-                        private var timerAtStart:Number = 0;
-                        private var timerAtPause:Number = 0;
-                        private var t:Timer;
+                        private const TIMER_INTERVAL:int = 1000;
+                        private var stopwatch:Timer;
                         private var d:Date;
 
-                        [Bindable] private var sec:int = 0;
-                        [Bindable] private var hrs:int = 0;
-                        [Bindable] private var min:int = 0;
-                        [Bindable] private var mls:int = 0;
+                        // Time stamps
+		        private var pauseTime:Number = 0;
+		        private var pauseLength:Number = 0;
+		        private var buttonPressTime:Number = 0;
+		
+                        // Flag
+		        private var timing:Boolean = false;
+
+                        [Bindable] private var hours:int = 0;
+                        [Bindable] private var seconds:int = 0;
+                        [Bindable] private var minutes:int = 0;
+                        [Bindable] private var milli:int = 0;
 			
 			private function onCreationComplete():void {
-				dispatcher = new Dispatcher();
+		            dispatcher = new Dispatcher();
 
-                                t = new Timer(TIMER_INTERVAL);
-                                t.addEventListener(TimerEvent.TIMER, updateTimer);
-                            LOGGER.debug("TimerWindows.mxml: test message");
+                            stopwatch = new Timer(TIMER_INTERVAL);
+                            stopwatch.addEventListener(TimerEvent.TIMER, updateTimer);
+
+                            var logData:Object = new Object();       
+                            JSLog.debug("TimerWindows.mxml: test message", logData);
 			}
 			
 			public function getPrefferedPosition():String{
@@ -111,80 +123,130 @@
 			}
 
                         private function updateTimer(evt:TimerEvent):void {
-                            d = new Date( getTimer() - timerAtStart + timerAtPause);
-                            hrs = d.hours;
-                            min = d.minutes;
-                            sec = d.seconds;
-                            mls = d.milliseconds;
+			    var totalTime:Number = (getTimer()/1000)-pauseLength;
+			    var goTime:Number = totalTime-buttonPressTime;
+			
+		            if( timing ) 
+			    {
+				// Calculate time
+				hours = Math.floor(goTime/3600);
+				minutes = Math.floor((goTime/3600-hours)*60);
+				seconds = Math.floor(((goTime/3600-hours)*60-minutes)*60);
+				milli = Math.floor((goTime-(seconds+(minutes*60)+(hours*3600)))*100);				
+			    }
 
-                            var dateFormatter = new DateFormatter();
-                            dateFormatter.formatString = 'HH:NN:SS';
-
-                            counter.text = dateFormatter.format(d);
                         }
 
                         private function startPauseTimer(event:MouseEvent):void {
+                            var logData:Object = new Object();       
                             if ( event.target.label == "Start" ) {
                                 event.target.label = "Pause";
-                                timerAtStart = getTimer();
-                                t.start();
+				pause(false);
+                                stopwatch.start();
                             } else {
                                 event.target.label = "Start";
-                                timerAtPause = hrs * 3600000 + min * 60000 + sec * 1000 + mls;
-                                t.stop();
+				pause(true);
+                                stopwatch.stop();
                             }
                         }
 
                         private function startTimer():void {
-                            t.start();
+                            var logData:Object = new Object();       
+                            JSLog.debug("startTimer()", logData);
+                            stopwatch.start();
                         }
 
+                        public function pause(b:Boolean):void
+		        {
+                            var logData:Object = new Object();       
+			    if( b ){
+				pauseTime = getTimer()/1000;
+                                JSLog.debug("pause(): pauseTime: " + pauseTime, logData);
+			    }else{
+				pauseLength = ((getTimer()/1000)-pauseTime)+pauseLength;
+                                JSLog.debug("pause(): pauseLength: " + pauseLength, logData);
+			    }
+			    timing = !b;
+		        }
+
                         private function stopTimer():void {
-                            t.stop();
-                            timerAtPause = hrs * 3600000 + min * 60000 + sec * 1000 + mls;
+                            var logData:Object = new Object();       
+
+                            stopwatch.stop();
+			    buttonPressTime = (getTimer()/1000)-pauseLength;
+                            JSLog.debug("stopTimer(): buttonPressTime: " + buttonPressTime, logData);
+                            JSLog.debug("stopTimer(): hours: " + hours, logData);
+                            JSLog.debug("stopTimer(): minutes: " + minutes, logData);
+                            JSLog.debug("stopTimer(): seconds: " + seconds, logData);
+                            JSLog.debug("stopTimer(): milli: " + milli, logData);
+			    pause(true);
 
                             var encryptedSession = encrypt("TuberEdu");
-                            var encryptedTime = encrypt(timerAtPause.toString());
+                            var encryptedTime = encrypt(buttonPressTime.toString());
                             
                             // http://tuberedu.com/tuberapi/tubertutoring?tuberroomrd=xxxxxxxxxx&tubertime=xx
-                            var url:String = new String("http://tuberedu.com/tuberapi/tubertutoring?tuberroomrd=");
+                            var url:String = new String("http://tuberedu.com/tuberapi/tubertutoring?tuberroomid=");
                             url += encryptedSession;
                             url += "&tubertime=";
                             url += encryptedTime;
-                            LOGGER.debug("stopTimer url: " + url);
-                            navigateToURL(new URLRequest(url), "_self");
 
-                            timerAtPause = 0;
-                            timerAtStart = 0;
-                            hrs = 0;
-                            min = 0;
-                            sec = 0;
-                            mls = 0;
+                            JSLog.info("stopTimer() url: " + url, logData);
+                            navigateToURL(new URLRequest(url), "_self");
+                            JSLog.info("stopTimer(): navigating to url", logData);
+                            hours = 0;
+                            minutes = 0;
+                            seconds = 0;
+                            milli = 0;
                         }
 
                         //notice that decrKey and decrIV length must be 16 chars long! ex: 1234567890123456
                         private function encrypt(input:String):String
                         {
-                            var decrKey:String = new String("tuber$2016");
-                            // byte[] iv = { 20, 52, 88, 120, 76, 89, 205, 239 };
+                            var logData:Object = new Object();       
+                            JSLog.debug("encrypt()", logData);
+                            JSLog.debug("encrypt() input string: " + input, logData);
+
+                            var decrKey:String = new String("tuber$2016abcdef");
+                            // byte[] iv = { 20, 52, 88, 20, 76, 89, 25, 39 };
                             var iv:ByteArray = new ByteArray();
-                            iv.writeUnsignedInt(20);
-                            iv.writeUnsignedInt(52);
-                            iv.writeUnsignedInt(88);
-                            iv.writeUnsignedInt(120);
-                            iv.writeUnsignedInt(76);
-                            iv.writeUnsignedInt(89);
-                            iv.writeUnsignedInt(205);
-                            iv.writeUnsignedInt(239);
+                            iv.writeByte(2);
+                            iv.writeByte(0);
+                            iv.writeByte(5);
+                            iv.writeByte(2);
+                            iv.writeByte(8);
+                            iv.writeByte(8);
+                            iv.writeByte(2);
+                            iv.writeByte(0);
+                            iv.writeByte(7);
+                            iv.writeByte(6);
+                            iv.writeByte(8);
+                            iv.writeByte(9);
+                            iv.writeByte(2);
+                            iv.writeByte(5);
+                            iv.writeByte(3);
+                            iv.writeByte(9);
+
+                            JSLog.debug("encrypt(): A", logData);
+                            JSLog.debug("encrypt(): iv: " + iv.toString(), logData);
 
                             var decrIV:String = iv.readUTF();
+                            JSLog.debug("encrypt(): B", logData);
                             var inputBA:ByteArray=Hex.toArray(Hex.fromString(input));        
+                            JSLog.debug("encrypt(): C", logData);
                             var key:ByteArray = Hex.toArray(Hex.fromString(decrKey));                
+                            JSLog.debug("encrypt(): D", logData);
                             var pad:IPad = new NullPad();
-                            var aes:ICipher = Crypto.getCipher("des-cbc", key, pad);
+                            JSLog.debug("encrypt(): E", logData);
+                            var aes:ICipher = Crypto.getCipher("aes-cbc", key, pad);
+                            JSLog.debug("encrypt(): F", logData);
                             var ivmode:IVMode = aes as IVMode;
-                            ivmode.IV = Hex.toArray(Hex.fromString(decrIV));            
+                            JSLog.debug("encrypt(): G", logData);
+                            ivmode.IV = Hex.toArray(Hex.fromString(decrIV));   
+                            JSLog.debug("encrypt(): H", logData);
                             aes.encrypt(inputBA);  
+                            JSLog.debug("encrypt(): I", logData);
+
+                            JSLog.debug("encrypt(): end", logData);
 
                             return Base64.encodeByteArray( inputBA);
                          }
@@ -198,5 +260,5 @@
         <mx:Button id="btnStop" label="Stop" click="stopTimer()" />
     </mx:ApplicationControlBar>
 
-    <mx:Label id="counter" text="{hrs + ' : ' + min + ' : ' + sec}" fontSize="48" />
+    <mx:Label id="counter" text="{hours + ' : ' + minutes + ' : ' + seconds}" fontSize="48" />
 </mdi:CustomMdiWindow>
