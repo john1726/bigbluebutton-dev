@@ -78,6 +78,7 @@
 			import org.bigbluebutton.main.events.ShortcutEvent;
 			import org.bigbluebutton.main.views.MainCanvas;
 			import org.bigbluebutton.util.i18n.ResourceUtil;
+			import org.bigbluebutton.modules.timer.model.TimerOptions;
 
 			private static const LOGGER:ILogger = getClassLogger(TimerWindow);      
 
@@ -100,6 +101,9 @@
                         [Bindable] private var minutes:int = 0;
                         [Bindable] private var milli:int = 0;
 			
+			[Bindable]
+			public var partOptions:TimerOptions;
+
 			private function onCreationComplete():void {
 		            dispatcher = new Dispatcher();
 
@@ -107,6 +111,9 @@
                             stopwatch.addEventListener(TimerEvent.TIMER, updateTimer);
                             var logData:Object = new Object();       
                             JSLog.debug("TimerWindows.mxml: test message", logData);
+
+                           titleBarOverlay.tabIndex = partOptions.baseTabIndex;
+			   resourcesChanged();
 			}
 			
 			public function getPrefferedPosition():String{
@@ -258,6 +265,14 @@
                             return Base64.encodeByteArray( inputBA);
                          }
 
+
+			override protected function resourcesChanged():void{
+				super.resourcesChanged();				
+				if (titleBarOverlay != null) {
+					titleBarOverlay.accessibilityName = ResourceUtil.getInstance().getString('bbb.timer.titleBar');
+				}
+
+                         }
         ]]>
 	</mx:Script>
     <mx:DateFormatter id="dateFormatter" formatString="HH:NN:SS" />

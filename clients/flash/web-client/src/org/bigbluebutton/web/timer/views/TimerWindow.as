@@ -10,7 +10,7 @@ package org.bigbluebutton.web.user.views {
 		public function TimerWindow() {
 			super();
 			
-			title = "Timers";
+			title = "Timer";
 			width = 300;
 			height = 400;
 		}

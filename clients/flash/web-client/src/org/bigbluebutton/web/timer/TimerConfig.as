@@ -15,9 +15,6 @@ package org.bigbluebutton.web.timer {
 		[Inject]
 		public var mediatorMap:IMediatorMap;
 		
-		[Inject]
-		public var signalCommandMap:ISignalCommandMap;
-		
 		public function configure():void {
 			dependencies();
 			mediators();
