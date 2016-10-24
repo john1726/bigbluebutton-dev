@@ -31,7 +31,26 @@
 
 	<mate:Listener type="{StartTimerEvent.START_TIMER}" method="handleStartTimer" />
 	<mate:Listener type="{StopTimerEvent.STOP_TIMER}" method="handleStopTimer" />
+        <mx:Style>
+          CounterStyle {
+              fontWeight: bold;
+              iconColor: green;
+          }
 
+          .selectedStyle {
+              color: green;
+              textRollOverColor: green;
+              textSelectedColor: green;
+              themeColor: green;
+          }
+
+          .unselectedStyle {
+              color: red;
+              textRollOverColor: red;
+              textSelectedColor: red;
+              themeColor: red;
+          }
+        </mx:Style>
 	<mx:Script>
 		<![CDATA[ 
                         import com.hurlant.crypto.symmetric.AESKey;
@@ -106,6 +125,8 @@
 
 			private function onCreationComplete():void {
 		            dispatcher = new Dispatcher();
+
+                            counter.styleName = "selectedStyle";
 
                             stopwatch = new Timer(TIMER_INTERVAL);
                             stopwatch.addEventListener(TimerEvent.TIMER, updateTimer);
@@ -276,11 +297,9 @@
         ]]>
 	</mx:Script>
     <mx:DateFormatter id="dateFormatter" formatString="HH:NN:SS" />
-
     <mx:ApplicationControlBar dock="true">
         <mx:Button id="btnStart" label="Start" click="startPauseTimer(event)" />
         <mx:Button id="btnStop" label="Stop" click="stopTimer()" />
+        <mx:Label id="counter" text="{hours + ' : ' + minutes + ' : ' + seconds}" fontSize="24" verticalCenter="0" textAlign="center" />
     </mx:ApplicationControlBar>
-
-    <mx:Label id="counter" text="{hours + ' : ' + minutes + ' : ' + seconds}" fontSize="48" />
 </mdi:CustomMdiWindow>
