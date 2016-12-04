@@ -130,7 +130,7 @@
                 var logData:Object = new Object();       
                 JSLog.debug("TimerWindows.mxml: test message", logData);
 
-                /titleBarOverlay.tabIndex = partOptions.baseTabIndex;
+                //titleBarOverlay.tabIndex = partOptions.baseTabIndex;
 			    resourcesChanged();
 			}
 			

@@ -76,6 +76,23 @@ package org.bigbluebutton.modules.polling.service
         map
       );
     }
+
+    public function startTimerSyncPoll(pollId:String, sessionTime:int):void
+    {
+      var map:Object = new Object();
+      map["pollId"] = pollId;
+      map["sessionTime"] = sessionTime;
+      
+      var _nc:ConnectionManager = BBB.initConnectionManager();
+      _nc.sendMessage("poll.startTimerSyncPoll", 
+        function(result:String):void { 
+        },	                   
+        function(status:String):void {
+			LOGGER.error(status); 
+        },
+        map
+      );
+    }
     
     public function stopPoll(pollId:String):void
     {

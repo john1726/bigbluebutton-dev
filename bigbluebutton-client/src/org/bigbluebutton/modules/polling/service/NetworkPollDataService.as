@@ -38,7 +38,7 @@ package org.bigbluebutton.modules.polling.service
       sender.showPollResult(pollId, show);
     }
 
-    public function startTimerSyncPoll(pollId:String, sessionTime:Int):void
+    public function startTimerSyncPoll(pollId:String, sessionTime:int):void
     {
       sender.startTimerSyncPoll(pollId, sessionTime);
     }

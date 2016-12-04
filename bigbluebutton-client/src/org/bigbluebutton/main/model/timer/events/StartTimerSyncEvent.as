@@ -24,7 +24,7 @@ package org.bigbluebutton.main.model.timer.events
 	{
 		public static const SYNC_START_TIMER:String = "SYNC_START_TIMER";
 
-        public var seconds: Int;
+        public var seconds: int;
 		
 		public function StartTimerSyncEvent()
 		{

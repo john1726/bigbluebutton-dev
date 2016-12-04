@@ -23,6 +23,8 @@ package org.bigbluebutton.modules.polling.events
 	public class StartTimerSyncPollEvent extends Event
 	{
 		public static const START_TIMER_SYNC_POLL:String = "start timer sync poll";
+
+        public var seconds:int;
 		
 		public function StartTimerSyncPollEvent()
 		{

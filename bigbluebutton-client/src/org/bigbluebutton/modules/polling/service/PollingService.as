@@ -24,6 +24,7 @@ package org.bigbluebutton.modules.polling.service
 	import org.bigbluebutton.modules.polling.events.StartCustomPollEvent;
 	import org.bigbluebutton.modules.polling.events.StartPollEvent;
 	import org.bigbluebutton.modules.polling.events.StopPollEvent;
+    import org.bigbluebutton.modules.polling.events.StartTimerSyncPollEvent;
 	import org.bigbluebutton.modules.polling.events.VotePollEvent;
 	import org.bigbluebutton.modules.polling.model.PollingModel;
 	import org.bigbluebutton.modules.polling.model.SimplePoll;
