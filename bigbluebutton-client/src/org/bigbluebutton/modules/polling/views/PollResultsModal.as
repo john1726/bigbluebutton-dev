@@ -20,6 +20,7 @@ package org.bigbluebutton.modules.polling.views
 	import org.bigbluebutton.modules.polling.events.PollVotedEvent;
 	import org.bigbluebutton.modules.polling.events.ShowPollResultEvent;
 	import org.bigbluebutton.modules.polling.events.StopPollEvent;
+	import org.bigbluebutton.modules.polling.events.StartTimerSyncPollEvent;
 	import org.bigbluebutton.modules.polling.model.SimpleAnswer;
 	import org.bigbluebutton.modules.polling.model.SimpleAnswerResult;
 	import org.bigbluebutton.modules.polling.model.SimplePoll;
@@ -28,6 +29,7 @@ package org.bigbluebutton.modules.polling.views
 	public class PollResultsModal extends TitleWindow {
 		private var _voteListener:Listener;
 		private var _stopPollListener:Listener;
+		private var _startTimerSyncPollListener:Listener;
 		
 		private var _respondersLabel:Label;
 		private var _respondersLabelDots:Label;
@@ -113,7 +115,11 @@ package org.bigbluebutton.modules.polling.views
 			_stopPollListener = new Listener();
 			_stopPollListener.type = PollStoppedEvent.POLL_STOPPED;
 			_stopPollListener.method = handlePollStoppedEvent;
-			
+
+			_startTimerSyncPollListener = new Listener();
+			_startTimerSyncPollListener.type =  StartTimerSyncEvent.SYNC_START_TIMER;
+			_startTimerSyncPollListener.method = handleStartSyncTimerClick;
+
 			_dotTimer = new Timer(200, 0);
 			_dotTimer.addEventListener(TimerEvent.TIMER, dotAnimate);
 			_dotTimer.start();
@@ -183,6 +189,12 @@ package org.bigbluebutton.modules.polling.views
 			dispatcher.dispatchEvent(new StopPollEvent());
 			close();
 		}
+
+		private function handleStartSyncTimerClick(e:MouseEvent):void {
+			var dispatcher:Dispatcher = new Dispatcher();
+			dispatcher.dispatchEvent(new StartTimerSyncPollEvent());
+			close();
+		}
 		
 		private function close():void {
 			_voteListener.type = null;
@@ -192,6 +204,10 @@ package org.bigbluebutton.modules.polling.views
 			_stopPollListener.type = null;
 			_stopPollListener.method = null;
 			_stopPollListener = null;
+
+			_startTimerSyncPollListener.type = null;
+			_startTimerSyncPollListener.method = null;
+			_startTimerSyncPollListener = null;
 			
 			PopUpManager.removePopUp(this);
 		}

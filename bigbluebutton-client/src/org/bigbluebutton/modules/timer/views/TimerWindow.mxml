@@ -31,6 +31,7 @@
 
 	<mate:Listener type="{StartTimerEvent.START_TIMER}" method="handleStartTimer" />
 	<mate:Listener type="{StopTimerEvent.STOP_TIMER}" method="handleStopTimer" />
+	<mate:Listener type="{StartTimerSyncEvent.SYNC_START_TIMER}" method="handleStartTimerSyncEvent" />
         <mx:Style>
           .selectedStyle {
               color: green;
@@ -48,22 +49,22 @@
         </mx:Style>
 	<mx:Script>
 		<![CDATA[ 
-                        import com.hurlant.crypto.symmetric.AESKey;
-                        import com.hurlant.crypto.symmetric.DESKey;
-                        import com.hurlant.util.Hex;
-                        import com.hurlant.crypto.symmetric.IPad;
-                        import com.hurlant.crypto.symmetric.ICipher;
-                        import com.hurlant.crypto.symmetric.IVMode;
-                        import com.hurlant.crypto.symmetric.NullPad;
-                        import com.hurlant.crypto.Crypto;
-                        import com.hurlant.util.Base64;
+            import com.hurlant.crypto.symmetric.AESKey;
+            import com.hurlant.crypto.symmetric.DESKey;
+            import com.hurlant.util.Hex;
+            import com.hurlant.crypto.symmetric.IPad;
+            import com.hurlant.crypto.symmetric.ICipher;
+            import com.hurlant.crypto.symmetric.IVMode;
+            import com.hurlant.crypto.symmetric.NullPad;
+            import com.hurlant.crypto.Crypto;
+            import com.hurlant.util.Base64;
 
-                        import flash.utils.ByteArray; 
-                        import flash.events.TimerEvent;
-                        import flash.utils.Timer;
-	                import flash.utils.getTimer;
-                        import flash.globalization.LocaleID;
-                        import flash.globalization.DateTimeFormatter;
+            import flash.utils.ByteArray; 
+            import flash.events.TimerEvent;
+            import flash.utils.Timer;
+            import flash.utils.getTimer;
+            import flash.globalization.LocaleID;
+            import flash.globalization.DateTimeFormatter;
 
 			import com.asfusion.mate.events.Dispatcher;
 			
@@ -76,8 +77,8 @@
 			import mx.events.MenuEvent;
 			import mx.managers.PopUpManager;
 			
-	                import org.bigbluebutton.main.api.JSLog;
-                        import org.as3commons.logging.util.jsonXify;
+            import org.bigbluebutton.main.api.JSLog;
+            import org.as3commons.logging.util.jsonXify;
 			import org.as3commons.logging.api.ILogger;
 			import org.as3commons.logging.api.getClassLogger;
 			import org.bigbluebutton.common.IBbbModuleWindow;
@@ -86,17 +87,17 @@
 			import org.bigbluebutton.core.UsersUtil;
 			import org.bigbluebutton.main.model.timer.events.StartTimerEvent;
 			import org.bigbluebutton.main.model.timer.events.StopTimerEvent;
+			import org.bigbluebutton.main.model.timer.events.StartTimerSyncEvent;
 			import org.bigbluebutton.core.events.LockControlEvent;
 			import org.bigbluebutton.core.events.VoiceConfEvent;
-			import org.bigbluebutton.core.managers.UserManager;
+			import org.bigbluebutton.core.managers.TimerManager;
 			import org.bigbluebutton.core.vo.LockSettingsVO;
 			import org.bigbluebutton.main.events.ShortcutEvent;
 			import org.bigbluebutton.main.views.MainCanvas;
 			import org.bigbluebutton.util.i18n.ResourceUtil;
 			import org.bigbluebutton.modules.timer.model.TimerOptions;
 
-			private static const LOGGER:ILogger = getClassLogger(TimerWindow);      
-
+			private static const LOGGER:ILogger = getClassLogger(TimerWindow);
 			private var dispatcher:Dispatcher;
 
                         private const TIMER_INTERVAL:int = 1000;
@@ -111,28 +112,26 @@
                         // Flag
 		        private var timing:Boolean = false;
 
-                        [Bindable] private var hours:int = 0;
-                        [Bindable] private var seconds:int = 0;
-                        [Bindable] private var minutes:int = 0;
-                        [Bindable] private var milli:int = 0;
+                        [Bindable] public static var hours:int = 0;
+                        [Bindable] public static var seconds:int = 0;
+                        [Bindable] public static var minutes:int = 0;
+                        [Bindable] public static var milli:int = 0;
 			
 			[Bindable]
 			public var partOptions:TimerOptions;
 
 			private function onCreationComplete():void {
-		            dispatcher = new Dispatcher();
+		        dispatcher = new Dispatcher();
 
-                            counter.styleName = "selectedStyle";
+                counter.styleName = "selectedStyle";
 
-                            stopwatch = new Timer(TIMER_INTERVAL);
-                            stopwatch.addEventListener(TimerEvent.TIMER, updateTimer);
-                            var logData:Object = new Object();       
-                            JSLog.debug("TimerWindows.mxml: test message", logData);
+                stopwatch = new Timer(TIMER_INTERVAL);
+                stopwatch.addEventListener(TimerEvent.TIMER, updateTimer);
+                var logData:Object = new Object();       
+                JSLog.debug("TimerWindows.mxml: test message", logData);
 
-                           titleBarOverlay.tabIndex = partOptions.baseTabIndex;
-			   resourcesChanged();
-                           stopwatch.start();
-                           btnStart.label = "Pause";
+                /titleBarOverlay.tabIndex = partOptions.baseTabIndex;
+			    resourcesChanged();
 			}
 			
 			public function getPrefferedPosition():String{
@@ -140,36 +139,43 @@
 			}
 
 			private function handleStartTimer(e:StartTimerEvent):void {
-                            startTimer();
+                startTimer();
 			}
 
 			private function handleStopTimer(e:StopTimerEvent):void {
-                            stopTimer();
+                stopTimer();
 			}
 
-                        private function updateTimer(evt:TimerEvent):void {
-                            var logData:Object = new Object();       
+            private function handleStartTimerSyncEvent(event:StartTimerSyncEvent):void {
+		 	    notifyUsersOfStartTimer();
+            }
+
+			private function notifyUsersOfStartTimer():void {
+                startSyncTimer();
+			}
+
+            private function updateTimer(evt:TimerEvent):void {
+                var logData:Object = new Object();       
 			    var totalTime:Number = (getTimer()/1000)-pauseLength;
 			    var goTime:Number = totalTime-buttonPressTime;
-                            //JSLog.debug("updateTimer(): totalTime: " + totalTime, logData);
-                            //JSLog.debug("updateTimer(): goTime: " + goTime, logData);
+                //JSLog.debug("updateTimer(): totalTime: " + totalTime, logData);
+                //JSLog.debug("updateTimer(): goTime: " + goTime, logData);
 			
-		            if( timing ) 
-			    {
-				// Calculate time
-				hours = Math.floor(goTime/3600);
-				minutes = Math.floor((goTime/3600-hours)*60);
-				seconds = Math.floor(((goTime/3600-hours)*60-minutes)*60);
-				milli = Math.floor((goTime-(seconds+(minutes*60)+(hours*3600)))*100);				
+		        if( timing ) 
+                {
+				    // Calculate time
+				    hours = Math.floor(goTime/3600);
+				    minutes = Math.floor((goTime/3600-hours)*60);
+				    seconds = Math.floor(((goTime/3600-hours)*60-minutes)*60);
+				    milli = Math.floor((goTime-(seconds+(minutes*60)+(hours*3600)))*100);				
 
-                                //JSLog.debug("updateTimer(): hours: " + hours, logData);
-                                //JSLog.debug("updateTimer(): minutes: " + minutes, logData);
-                                //JSLog.debug("updateTimer(): seconds: " + seconds, logData);
-			    }
+                    //JSLog.debug("updateTimer(): hours: " + hours, logData);
+                    //JSLog.debug("updateTimer(): minutes: " + minutes, logData);
+                    //JSLog.debug("updateTimer(): seconds: " + seconds, logData);
+                 }
+               }
 
-                        }
-
-                        private function startPauseTimer(event:MouseEvent):void {
+               private function startPauseTimer(event:MouseEvent):void {
                             var logData:Object = new Object();       
                             JSLog.debug("startPauseTimer(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
 			    if (UsersUtil.amIPresenter()) {
@@ -190,14 +196,19 @@
                         private function startTimer():void {
                             var logData:Object = new Object();       
                             JSLog.debug("startTimer(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
-			    if (UsersUtil.amIPresenter()) {
+
+                            if (UsersUtil.amIPresenter()) {
                                 JSLog.debug("startTimer()", logData);
                                 stopwatch.start();
                             }
                         }
 
+                        private function startSyncTimer():void {
+                            startTimer();
+                        }
+
                         public function pause(b:Boolean):void
-		        {
+		                {
                             var logData:Object = new Object();       
                             JSLog.debug("pause(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
 
@@ -211,38 +222,38 @@
                             timing = !b;
 		        }
 
-                        private function stopTimer():void {
-                            var logData:Object = new Object();       
-                            JSLog.debug("stopTimer(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
+                private function stopTimer():void {
+                    var logData:Object = new Object();       
+                    JSLog.debug("stopTimer(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
 
-			    if (UsersUtil.amIPresenter()) {
-                                stopwatch.stop();
-			        buttonPressTime = (getTimer()/1000)-pauseLength;
-                                JSLog.debug("stopTimer(): buttonPressTime: " + buttonPressTime, logData);
-                                JSLog.debug("stopTimer(): hours: " + hours, logData);
-                                JSLog.debug("stopTimer(): minutes: " + minutes, logData);
-                                JSLog.debug("stopTimer(): seconds: " + seconds, logData);
-                                JSLog.debug("stopTimer(): milli: " + milli, logData);
-			        pause(true);
+                      if (UsersUtil.amIPresenter()) {
+                          stopwatch.stop();
+			              buttonPressTime = (getTimer()/1000)-pauseLength;
+                          JSLog.debug("stopTimer(): buttonPressTime: " + buttonPressTime, logData);
+                          JSLog.debug("stopTimer(): hours: " + hours, logData);
+                          JSLog.debug("stopTimer(): minutes: " + minutes, logData);
+                          JSLog.debug("stopTimer(): seconds: " + seconds, logData);
+                          JSLog.debug("stopTimer(): milli: " + milli, logData);
+			              pause(true);
 
-                                var encryptedSession = encrypt("TuberEdu");
-                                var encryptedTime = encrypt(buttonPressTime.toString());
+                          var encryptedSession = encrypt("TuberEdu");
+                          var encryptedTime = encrypt(buttonPressTime.toString());
                             
-                                // http://tuberedu.com/tuberapi/tubertutoring?tuberroomrd=xxxxxxxxxx&tubertime=xx
-                                var url:String = new String("http://tuberedu.com/tuberapi/tubertutoring?tuberroomid=");
-                                url += encryptedSession;
-                                url += "&tubertime=";
-                                url += encryptedTime;
+                          // http://tuberedu.com/tuberapi/tubertutoring?tuberroomrd=xxxxxxxxxx&tubertime=xx
+                          var url:String = new String("http://tuberedu.com/tuberapi/tubertutoring?tuberroomid=");
+                           url += encryptedSession;
+                           url += "&tubertime=";
+                           url += encryptedTime;
 
-                                JSLog.info("stopTimer() url: " + url, logData);
-                                navigateToURL(new URLRequest(url), "_self");
-                                JSLog.info("stopTimer(): navigating to url", logData);
-                                hours = 0;
-                                minutes = 0;
-                                seconds = 0;
-                                milli = 0;
-                            }
+                           JSLog.info("stopTimer() url: " + url, logData);
+                           navigateToURL(new URLRequest(url), "_self");
+                           JSLog.info("stopTimer(): navigating to url", logData);
+                           hours = 0;
+                           minutes = 0;
+                           seconds = 0;
+                           milli = 0;
                         }
+                    }
 
                         //notice that decrKey and decrIV length must be 16 chars long! ex: 1234567890123456
                         private function encrypt(input:String):String

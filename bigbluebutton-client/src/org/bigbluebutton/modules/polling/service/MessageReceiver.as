@@ -51,6 +51,9 @@ package org.bigbluebutton.modules.polling.service
         case "pollUserVotedMessage":
           processor.handlePollUserVotedMessage(message);
           break;
+        case "pollStartTimerMessage":
+          processor.handlePollStartTimerMessage(message);
+          break;
       }
     }
   }

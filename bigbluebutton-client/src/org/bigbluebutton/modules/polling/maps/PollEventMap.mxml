@@ -58,7 +58,9 @@
     <MethodInvoker generator="{PollingService}" method="handleShowPollResultEvent" arguments="{event}"/>
   </EventHandlers>
 
- 
+  <EventHandlers type="{StartTimerSyncPollEvent.SYNC_START_TIMER}">
+    <MethodInvoker generator="{PollingService}" method="handlehandlePollStartTimerEvent" arguments="{event}"/>
+  </EventHandlers> 
   
   <Debugger level="{Debugger.ALL}" />
 </EventMap>

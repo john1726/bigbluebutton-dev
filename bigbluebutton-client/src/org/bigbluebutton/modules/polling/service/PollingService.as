@@ -90,7 +90,11 @@ package org.bigbluebutton.modules.polling.service
       var curPoll:SimplePoll = model.getCurrentPoll();
       dataService.showPollResult(curPoll.id, event.show);
     }
-    
+
+    public function handlehandlePollStartTimerEvent(event:StartTimerSyncPollEvent):void {
+      var curPoll:SimplePoll = model.getCurrentPoll();
+      dataService.startTimerSyncPoll(curPoll.id, event.seconds);
+    }    
 
 	}
 }

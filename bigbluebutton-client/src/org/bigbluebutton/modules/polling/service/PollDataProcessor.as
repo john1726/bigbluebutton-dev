@@ -112,6 +112,11 @@ package org.bigbluebutton.modules.polling.service
       }    
     }
     
+    public function handlePollStartTimerMessage(msg:Object):void {
+      var map:Object = JSON.parse(msg.msg);
+      dispatcher.dispatchEvent(new StartTimerSyncEvent());
+    }
+
     public function handlePollUserVotedMessage(msg:Object):void {
       var map:Object = JSON.parse(msg.msg);
       if (map.hasOwnProperty("poll")) {
