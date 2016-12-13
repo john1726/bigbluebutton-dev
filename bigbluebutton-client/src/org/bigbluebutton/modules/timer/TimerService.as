@@ -16,7 +16,7 @@
 * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 *
 */
-package org.bigbluebutton.main.model.timer
+package org.bigbluebutton.modules.timer
 {
 	import com.asfusion.mate.events.Dispatcher;
 	

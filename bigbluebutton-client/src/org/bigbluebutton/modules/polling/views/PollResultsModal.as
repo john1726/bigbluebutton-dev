@@ -21,7 +21,6 @@ package org.bigbluebutton.modules.polling.views
 	import org.bigbluebutton.modules.polling.events.ShowPollResultEvent;
 	import org.bigbluebutton.modules.polling.events.StopPollEvent;
 	import org.bigbluebutton.modules.polling.events.StartTimerSyncPollEvent;
-	import org.bigbluebutton.main.model.timer.events.StartTimerSyncEvent;
 	import org.bigbluebutton.modules.polling.model.SimpleAnswer;
 	import org.bigbluebutton.modules.polling.model.SimpleAnswerResult;
 	import org.bigbluebutton.modules.polling.model.SimplePoll;
@@ -117,9 +116,10 @@ package org.bigbluebutton.modules.polling.views
 			_stopPollListener.type = PollStoppedEvent.POLL_STOPPED;
 			_stopPollListener.method = handlePollStoppedEvent;
 
-			_startTimerSyncPollListener = new Listener();
-			_startTimerSyncPollListener.type =  StartTimerSyncEvent.SYNC_START_TIMER;
-			_startTimerSyncPollListener.method = handleStartSyncTimerClick;
+            //TODO: remove?
+			//_startTimerSyncPollListener = new Listener();
+			//_startTimerSyncPollListener.type =  StartTimerSyncEvent.SYNC_START_TIMER;
+			//_startTimerSyncPollListener.method = handleStartSyncTimerClick;
 
 			_dotTimer = new Timer(200, 0);
 			_dotTimer.addEventListener(TimerEvent.TIMER, dotAnimate);

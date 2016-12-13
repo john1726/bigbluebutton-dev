@@ -30,7 +30,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			import org.bigbluebutton.main.events.BBBEvent;
 			import org.bigbluebutton.main.events.LogoutEvent;
 			import org.bigbluebutton.main.events.TimerServicesEvent;
-			import org.bigbluebutton.main.model.timer.TimerService;
+			import org.bigbluebutton.modules.timer.TimerService;
 			import org.bigbluebutton.main.model.timer.events.StartTimerEvent;
 			import org.bigbluebutton.main.model.timer.events.StopTimerEvent;
 			import org.bigbluebutton.main.model.timer.events.StartTimerSyncEvent;

@@ -29,8 +29,8 @@
         title="{ResourceUtil.getInstance().getString('bbb.timer.title')}"
 	showCloseButton="false">
 
-	<mate:Listener type="{StartTimerEvent.START_TIMER}" method="handleStartTimer" />
-	<mate:Listener type="{StopTimerEvent.STOP_TIMER}" method="handleStopTimer" />
+	<mate:Listener type="{StartTimerModuleEvent.START_TIMER_MODULE}" method="handleStartTimer" />
+	<mate:Listener type="{StopTimerModuleEvent.STOP_TIMER_MODULE}" method="handleStopTimer" />
 	<mate:Listener type="{StartTimerSyncEvent.SYNC_START_TIMER}" method="handleStartTimerSyncEvent" />
         <mx:Style>
           .selectedStyle {
@@ -85,9 +85,9 @@
 			import org.bigbluebutton.common.Images;
 			import org.bigbluebutton.common.events.LocaleChangeEvent;
 			import org.bigbluebutton.core.UsersUtil;
-			import org.bigbluebutton.main.model.timer.events.StartTimerEvent;
-			import org.bigbluebutton.main.model.timer.events.StopTimerEvent;
-			import org.bigbluebutton.main.model.timer.events.StartTimerSyncEvent;
+			import org.bigbluebutton.modules.timer.events.StartTimerModuleEvent;
+			import org.bigbluebutton.modules.timer.events.StopTimerModuleEvent;
+			import org.bigbluebutton.modules.timer.events.StartTimerSyncEvent;
 			import org.bigbluebutton.core.events.LockControlEvent;
 			import org.bigbluebutton.core.events.VoiceConfEvent;
 			import org.bigbluebutton.core.managers.TimerManager;
@@ -138,11 +138,11 @@
 				return MainCanvas.TOP_LEFT;
 			}
 
-			private function handleStartTimer(e:StartTimerEvent):void {
+			private function handleStartTimer(e:StartTimerModuleEvent):void {
                 startTimer();
 			}
 
-			private function handleStopTimer(e:StopTimerEvent):void {
+			private function handleStopTimer(e:StopTimerModuleEvent):void {
                 stopTimer();
 			}
 
