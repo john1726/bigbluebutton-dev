@@ -67,6 +67,7 @@ public class Constants {
   public static final String PERMISSIONS                     = "permissions";
   public static final String VALID                           = "valid";
   public static final String CHAT_HISTORY                    = "chat_history";
+  public static final String TIMER_HISTORY                   = "timer_history";
   public static final String MESSAGE                         = "message";
   public static final String SET_BY_USER_ID                  = "set_by_user_id";
   public static final String POLLS                           = "polls";

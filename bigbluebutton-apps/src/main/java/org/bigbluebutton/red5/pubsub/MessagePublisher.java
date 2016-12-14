@@ -223,7 +223,6 @@ public class MessagePublisher {
 		sender.send(MessagingConstants.TO_CHAT_CHANNEL, msg.toJson());
 	}
 
-
 	public void sendPublicMessage(String meetingID, String requesterID, Map<String, String> message) {
 		SendPublicChatMessage msg = new SendPublicChatMessage(meetingID, requesterID, message);
 		sender.send(MessagingConstants.TO_CHAT_CHANNEL, msg.toJson());
@@ -232,6 +231,11 @@ public class MessagePublisher {
 	public void sendPrivateMessage(String meetingID, String requesterID, Map<String, String> message) {
 		SendPrivateChatMessage msg = new SendPrivateChatMessage(meetingID, requesterID, message);
 		sender.send(MessagingConstants.TO_CHAT_CHANNEL, msg.toJson());
+	}
+
+	public void getTimerHistory(String meetingID, String requesterID, String replyTo) {
+		GetTimerHistoryRequestMessage msg = new GetTimerHistoryRequestMessage(meetingID, requesterID, replyTo);
+		sender.send(MessagingConstants.TO_TIMER_CHANNEL, msg.toJson());
 	}
 
 	public void sendWhiteboardAnnotation(String meetingID, String requesterID, Map<String, Object> annotation) {

@@ -103,6 +103,9 @@ public interface IBigBlueButtonInGW {
 	void sendPublicMessage(String meetingID, String requesterID, Map<String, String> message);
 	void sendPrivateMessage(String meetingID, String requesterID, Map<String, String> message);
 
+	// Timer
+	void getTimerHistory(String meetingID, String requesterID, String replyTo);
+
 	// Whiteboard
 	void sendWhiteboardAnnotation(String meetingID, String requesterID, java.util.Map<String, Object> annotation);	
 	void requestWhiteboardAnnotationHistory(String meetingID, String requesterID, String whiteboardId, String replyTo);
