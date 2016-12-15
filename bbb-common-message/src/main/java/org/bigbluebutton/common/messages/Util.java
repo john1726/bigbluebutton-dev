@@ -159,6 +159,48 @@ public class Util {
 		return null;
 	}
 
+	public ArrayList<Map<String, Object>> extractTimerHistory(JsonArray history) {
+		ArrayList<Map<String, Object>> collection = new ArrayList<Map<String, Object>>();
+		Iterator<JsonElement> historyIter = history.iterator();
+		while (historyIter.hasNext()){
+			JsonElement timer = historyIter.next();
+			Map<String, Object> timerMap = extractTimer((JsonObject)timer);
+			if (timerMap != null) {
+				collection.add(timerMap);
+			}
+		}
+		return collection;
+	}
+
+	private Map<String, Object> extractTimer(JsonObject timer) {
+
+		if (timer.has(Constants.FROM_COLOR)
+				&& timer.has(Constants.MESSAGE)
+				&& timer.has(Constants.TO_USERNAME)
+				&& timer.has(Constants.FROM_TZ_OFFSET)
+				&& timer.has(Constants.FROM_COLOR)
+				&& timer.has(Constants.TO_USERID)
+				&& timer.has(Constants.FROM_USERID)
+				&& timer.has(Constants.FROM_TIME)
+				&& timer.has(Constants.FROM_USERNAME)){
+
+			Map<String, Object> timerMap = new HashMap<String, Object>();
+
+			timerMap.put(TimerKeyUtil.TIMER_TYPE, timer.get(Constants.TIMER_TYPE).getAsString());
+			timerMap.put(TimerKeyUtil.MESSAGE, timer.get(Constants.MESSAGE).getAsString());
+			timerMap.put(TimerKeyUtil.TO_USERNAME, timer.get(Constants.TO_USERNAME).getAsString());
+			timerMap.put(TimerKeyUtil.FROM_TZ_OFFSET, timer.get(Constants.FROM_TZ_OFFSET).getAsString());
+			timerMap.put(TimerKeyUtil.FROM_COLOR, timer.get(Constants.FROM_COLOR).getAsString());
+			timerMap.put(TimerKeyUtil.TO_USERID, timer.get(Constants.TO_USERID).getAsString());
+			timerMap.put(TimerKeyUtil.FROM_USERID, timer.get(Constants.FROM_USERID).getAsString());
+			timerMap.put(TimerKeyUtil.FROM_TIME, timer.get(Constants.FROM_TIME).getAsString());
+			timerMap.put(TimerKeyUtil.FROM_USERNAME, timer.get(Constants.FROM_USERNAME).getAsString());
+
+			return timerMap;
+		}
+		return null;
+	}
+
 	public ArrayList<Map<String, Object>> extractUsers(JsonArray users) {
 		ArrayList<Map<String, Object>> collection = new ArrayList<Map<String, Object>>();
 	
