@@ -324,6 +324,10 @@ class BigBlueButtonInGW(val system: ActorSystem, recorderApp: RecorderApplicatio
     bbbActor ! new GetChatHistoryRequest(meetingID, requesterID, replyTo)
   }
 
+  def getTimeHistory(meetingID: String, requesterID: String, replyTo: String) {
+    bbbActor ! new GetTimerHistoryRequest(meetingID, requesterID, replyTo)
+  }
+
   def sendPublicMessage(meetingID: String, requesterID: String, message: java.util.Map[String, String]) {
     // Convert java Map to Scala Map, then convert Mutable map to immutable map
     bbbActor ! new SendPublicMessageRequest(meetingID, requesterID, mapAsScalaMap(message).toMap)
