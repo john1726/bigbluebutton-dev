@@ -50,6 +50,9 @@ case class UserConnectedToGlobalAudio(meetingID: String, /** Not used. Just to s
 case class UserDisconnectedFromGlobalAudio(meetingID: String, /** Not used. Just to satisfy trait **/ voiceConf: String,
   userid: String, name: String) extends InMessage
 
+// Timer
+case class GetTimerHistoryRequest(meetingID: String, requesterID: String, replyTo: String) extends InMessage
+
 // Layout
 case class GetCurrentLayoutRequest(meetingID: String, requesterID: String) extends InMessage
 case class SetLayoutRequest(meetingID: String, requesterID: String, layoutID: String) extends InMessage

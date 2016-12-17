@@ -316,16 +316,22 @@ class BigBlueButtonInGW(val system: ActorSystem, recorderApp: RecorderApplicatio
 
   /**
    * *******************************************************************
+   * Message Interface for Timer
+   * *****************************************************************
+   */
+
+  def getTimerHistory(meetingID: String, requesterID: String, replyTo: String) {
+    bbbActor ! new GetTimerHistoryRequest(meetingID, requesterID, replyTo)
+  }
+
+  /**
+   * *******************************************************************
    * Message Interface for Chat
    * *****************************************************************
    */
 
   def getChatHistory(meetingID: String, requesterID: String, replyTo: String) {
     bbbActor ! new GetChatHistoryRequest(meetingID, requesterID, replyTo)
-  }
-
-  def getTimeHistory(meetingID: String, requesterID: String, replyTo: String) {
-    bbbActor ! new GetTimerHistoryRequest(meetingID, requesterID, replyTo)
   }
 
   def sendPublicMessage(meetingID: String, requesterID: String, message: java.util.Map[String, String]) {
