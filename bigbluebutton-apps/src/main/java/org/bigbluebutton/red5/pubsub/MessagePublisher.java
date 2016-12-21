@@ -218,6 +218,11 @@ public class MessagePublisher {
 		sender.send(MessagingConstants.TO_USERS_CHANNEL, msg.toJson());
 	}
 
+	public void sendPublicTimerMessage(String meetingID, String requesterID, Map<String, String> message) {
+		SendPublicTimerMessage msg = new SendPublicTimerMessage(meetingID, requesterID, message);
+		sender.send(MessagingConstants.TO_TIMER_CHANNEL, msg.toJson());
+	}
+
 	public void getChatHistory(String meetingID, String requesterID, String replyTo) {
 		GetChatHistoryRequestMessage msg = new GetChatHistoryRequestMessage(meetingID, requesterID, replyTo);
 		sender.send(MessagingConstants.TO_CHAT_CHANNEL, msg.toJson());

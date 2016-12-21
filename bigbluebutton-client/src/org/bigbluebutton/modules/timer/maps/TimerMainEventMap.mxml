@@ -34,6 +34,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			import org.bigbluebutton.main.model.timer.events.StartTimerEvent;
 			import org.bigbluebutton.main.model.timer.events.StopTimerEvent;
 			import org.bigbluebutton.main.model.timer.events.StartTimerSyncEvent;
+			import org.bigbluebutton.main.model.timer.events.StopTimerSyncEvent;
 		]]>
 	</mx:Script>
 	
@@ -57,6 +58,10 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
   <EventHandlers type="{StartTimerSyncEvent.SYNC_START_TIMER}" >
     <MethodInvoker generator="{TimerService}" method="startSyncTimer" arguments="" />
+  </EventHandlers>
+
+  <EventHandlers type="{StopTimerSyncEvent.SYNC_STOP_TIMER}" >
+    <MethodInvoker generator="{TimerService}" method="stopSyncTimer" arguments="" />
   </EventHandlers>
   <!-- End Viewers Stuff -->
   

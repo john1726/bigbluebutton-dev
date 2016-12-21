@@ -28,6 +28,7 @@ public class MessagingConstants {
 	public static final String FROM_POLLING_CHANNEL = FROM_BBB_APPS_CHANNEL + ":polling";
 	public static final String FROM_USERS_CHANNEL = FROM_BBB_APPS_CHANNEL + ":users";
 	public static final String FROM_CHAT_CHANNEL = FROM_BBB_APPS_CHANNEL + ":chat"; 
+	public static final String FROM_TIMER_CHANNEL = FROM_BBB_APPS_CHANNEL + ":timer"; 
 	public static final String FROM_WHITEBOARD_CHANNEL = FROM_BBB_APPS_CHANNEL + ":whiteboard";
 
 	public static final String TO_BBB_APPS_CHANNEL = "bigbluebutton:to-bbb-apps";	

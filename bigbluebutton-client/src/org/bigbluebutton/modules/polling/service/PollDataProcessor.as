@@ -15,6 +15,7 @@ package org.bigbluebutton.modules.polling.service
   import org.bigbluebutton.modules.polling.events.PollVotedEvent;
   import org.bigbluebutton.modules.polling.model.PollingModel;
   import org.bigbluebutton.modules.timer.events.StartTimerSyncEvent;
+  import org.bigbluebutton.modules.timer.events.StopTimerSyncEvent;
   import org.bigbluebutton.modules.polling.model.SimpleAnswer;
   import org.bigbluebutton.modules.polling.model.SimpleAnswerResult;
   import org.bigbluebutton.modules.polling.model.SimplePoll;
@@ -116,6 +117,11 @@ package org.bigbluebutton.modules.polling.service
     public function handlePollStartTimerMessage(msg:Object):void {
       var map:Object = JSON.parse(msg.msg);
       dispatcher.dispatchEvent(new StartTimerSyncEvent());
+    }
+
+    public function handlePollStopTimerMessage(msg:Object):void {
+      var map:Object = JSON.parse(msg.msg);
+      dispatcher.dispatchEvent(new StopTimerSyncEvent());
     }
 
     public function handlePollUserVotedMessage(msg:Object):void {

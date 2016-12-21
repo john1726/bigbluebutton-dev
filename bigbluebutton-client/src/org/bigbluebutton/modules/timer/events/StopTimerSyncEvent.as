@@ -20,18 +20,13 @@ package org.bigbluebutton.modules.timer.events
 {
 	import flash.events.Event;
 
-	public class StartTimerSyncEvent extends Event
+	public class StopTimerSyncEvent extends Event
 	{
-		public static const SYNC_START_TIMER:String = "SYNC_START_TIMER";
+		public static const SYNC_STOP_TIMER:String = "SYNC_STOP_TIMER";
 
-        public var hours: int;
-        public var minutes: int;
-        public var seconds: int;
-        public var milli: int;
-		
-		public function StartTimerSyncEvent()
+		public function StopTimerSyncEvent()
 		{
-			super(SYNC_START_TIMER, true, false);
+			super(SYNC_STOP_TIMER, true, false);
 		}
 	}
 }

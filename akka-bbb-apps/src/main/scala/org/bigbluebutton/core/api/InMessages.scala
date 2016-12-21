@@ -52,6 +52,7 @@ case class UserDisconnectedFromGlobalAudio(meetingID: String, /** Not used. Just
 
 // Timer
 case class GetTimerHistoryRequest(meetingID: String, requesterID: String, replyTo: String) extends InMessage
+case class SendPublicTimerMessageRequest(meetingID: String, requesterID: String, message: Map[String, String]) extends InMessage
 
 // Layout
 case class GetCurrentLayoutRequest(meetingID: String, requesterID: String) extends InMessage

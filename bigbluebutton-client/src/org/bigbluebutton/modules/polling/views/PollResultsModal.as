@@ -21,6 +21,7 @@ package org.bigbluebutton.modules.polling.views
 	import org.bigbluebutton.modules.polling.events.ShowPollResultEvent;
 	import org.bigbluebutton.modules.polling.events.StopPollEvent;
 	import org.bigbluebutton.modules.polling.events.StartTimerSyncPollEvent;
+	import org.bigbluebutton.modules.polling.events.StopTimerSyncPollEvent;
 	import org.bigbluebutton.modules.polling.model.SimpleAnswer;
 	import org.bigbluebutton.modules.polling.model.SimpleAnswerResult;
 	import org.bigbluebutton.modules.polling.model.SimplePoll;
@@ -29,6 +30,7 @@ package org.bigbluebutton.modules.polling.views
 	public class PollResultsModal extends TitleWindow {
 		private var _voteListener:Listener;
 		private var _stopPollListener:Listener;
+		private var _stopTimerSyncPollListener:Listener;
 		private var _startTimerSyncPollListener:Listener;
 		
 		private var _respondersLabel:Label;
@@ -116,10 +118,15 @@ package org.bigbluebutton.modules.polling.views
 			_stopPollListener.type = PollStoppedEvent.POLL_STOPPED;
 			_stopPollListener.method = handlePollStoppedEvent;
 
-            //TODO: remove?
-			//_startTimerSyncPollListener = new Listener();
+			_stopTimerSyncPollListener = new Listener();
+            //TODO: ?
+			//_stopTimerSyncPollListener.type =  StopTimerSyncEvent.SYNC_STOP_TIMER;
+			_stopTimerSyncPollListener.method = handleStopSyncTimerClick;
+
+			_startTimerSyncPollListener = new Listener();
+            //TODO: ?
 			//_startTimerSyncPollListener.type =  StartTimerSyncEvent.SYNC_START_TIMER;
-			//_startTimerSyncPollListener.method = handleStartSyncTimerClick;
+			_startTimerSyncPollListener.method = handleStartSyncTimerClick;
 
 			_dotTimer = new Timer(200, 0);
 			_dotTimer.addEventListener(TimerEvent.TIMER, dotAnimate);
@@ -191,6 +198,12 @@ package org.bigbluebutton.modules.polling.views
 			close();
 		}
 
+		private function handleStopSyncTimerClick(e:MouseEvent):void {
+			var dispatcher:Dispatcher = new Dispatcher();
+			dispatcher.dispatchEvent(new StopTimerSyncPollEvent());
+			close();
+		}
+
 		private function handleStartSyncTimerClick(e:MouseEvent):void {
 			var dispatcher:Dispatcher = new Dispatcher();
 			dispatcher.dispatchEvent(new StartTimerSyncPollEvent());
@@ -210,6 +223,10 @@ package org.bigbluebutton.modules.polling.views
 			_startTimerSyncPollListener.method = null;
 			_startTimerSyncPollListener = null;
 			
+			_stopTimerSyncPollListener.type = null;
+			_stopTimerSyncPollListener.method = null;
+			_stopTimerSyncPollListener = null;
+
 			PopUpManager.removePopUp(this);
 		}
 		

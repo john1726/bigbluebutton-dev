@@ -32,6 +32,7 @@
 	<mate:Listener type="{StartTimerModuleEvent.START_TIMER_MODULE}" method="handleStartTimer" />
 	<mate:Listener type="{StopTimerModuleEvent.STOP_TIMER_MODULE}" method="handleStopTimer" />
 	<mate:Listener type="{StartTimerSyncEvent.SYNC_START_TIMER}" method="handleStartTimerSyncEvent" />
+	<mate:Listener type="{StopTimerSyncEvent.SYNC_STOP_TIMER}" method="handleStopTimerSyncEvent" />
         <mx:Style>
           .selectedStyle {
               color: green;
@@ -88,6 +89,7 @@
 			import org.bigbluebutton.modules.timer.events.StartTimerModuleEvent;
 			import org.bigbluebutton.modules.timer.events.StopTimerModuleEvent;
 			import org.bigbluebutton.modules.timer.events.StartTimerSyncEvent;
+			import org.bigbluebutton.modules.timer.events.StopTimerSyncEvent;
 			import org.bigbluebutton.core.events.LockControlEvent;
 			import org.bigbluebutton.core.events.VoiceConfEvent;
 			import org.bigbluebutton.core.managers.TimerManager;
@@ -154,6 +156,14 @@
                 startSyncTimer();
 			}
 
+            private function handleStopTimerSyncEvent(event:StopTimerSyncEvent):void {
+		 	    notifyUsersOfStopTimer();
+            }
+
+			private function notifyUsersOfStopTimer():void {
+                stopSyncTimer();
+			}
+
             private function updateTimer(evt:TimerEvent):void {
                 var logData:Object = new Object();       
 			    var totalTime:Number = (getTimer()/1000)-pauseLength;
@@ -186,9 +196,27 @@
                                     JSLog.debug("startPauseTimer(): Start", logData);
                                 } else {
                                     event.target.label = "Start";
-				    pause(true);
+                                    pause(true);
                                     stopwatch.stop();
                                     JSLog.debug("startPauseTimer(): Pause", logData);
+                                }
+                            }
+                        }
+
+               private function startPauseTimer2():void {
+                            var logData:Object = new Object();       
+                            JSLog.debug("startPauseTimer2(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
+			    if (UsersUtil.amIPresenter()) {
+                                if ( btnStart.label == "Start" ) {
+                                    btnStart.label = "Pause";
+                                    pause(false);
+                                    stopwatch.start();
+                                    JSLog.debug("startPauseTimer2(): Start", logData);
+                                } else {
+                                    btnStart.label = "Start";
+                                    pause(true);
+                                    stopwatch.stop();
+                                    JSLog.debug("startPauseTimer2(): Pause", logData);
                                 }
                             }
                         }
@@ -204,7 +232,11 @@
                         }
 
                         private function startSyncTimer():void {
-                            startTimer();
+                            startPauseTimer2();
+                        }
+
+                        private function stopSyncTimer():void {
+                            stopTimer();
                         }
 
                         public function pause(b:Boolean):void
@@ -213,7 +245,7 @@
                             JSLog.debug("pause(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
 
                             if( b ){
-		                pauseTime = getTimer()/1000;
+                                pauseTime = getTimer()/1000;
                                 JSLog.debug("pause(): pauseTime: " + pauseTime, logData);
                             }else{
                                 pauseLength = ((getTimer()/1000)-pauseTime)+pauseLength;

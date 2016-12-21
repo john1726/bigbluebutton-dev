@@ -31,7 +31,7 @@ public class TimerMessageReceiver implements MessageHandler{
 						bbbGW.getTimerHistory(msg.meetingId, msg.requesterId, msg.replyTo);
 					} else if (SendPublicTimerMessage.SEND_PUBLIC_TIMER_MESSAGE.equals(messageName)){
 						SendPublicTimerMessage msg = SendPublicTimerMessage.fromJson(message);
-						bbbGW.sendPublicMessage(msg.meetingId, msg.requesterId, msg.messageInfo);
+						bbbGW.sendPublicTimerMessage(msg.meetingId, msg.requesterId, msg.messageInfo);
 					} 
 				}
 			}

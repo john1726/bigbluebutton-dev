@@ -104,6 +104,7 @@ public interface IBigBlueButtonInGW {
 	void sendPrivateMessage(String meetingID, String requesterID, Map<String, String> message);
 
 	// Timer
+	void sendPublicTimerMessage(String meetingID, String requesterID, Map<String, String> message);
 	void getTimerHistory(String meetingID, String requesterID, String replyTo);
 
 	// Whiteboard
