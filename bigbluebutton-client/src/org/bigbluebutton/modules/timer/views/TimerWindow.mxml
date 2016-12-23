@@ -131,6 +131,7 @@
                 stopwatch.addEventListener(TimerEvent.TIMER, updateTimer);
                 var logData:Object = new Object();       
                 JSLog.debug("TimerWindows.mxml: test message", logData);
+                //addEventListener(StartTimerSyncEvent.SYNC_START_TIMER, triggerStartTimer);
 
                 //titleBarOverlay.tabIndex = partOptions.baseTabIndex;
 			    resourcesChanged();
@@ -160,6 +161,10 @@
 		 	    notifyUsersOfStopTimer();
             }
 
+            //private function triggerStartTimer(event:StartTimerSyncEvent):void {
+		 	    //event.message = seconds.toString();
+            //}
+
 			private function notifyUsersOfStopTimer():void {
                 stopSyncTimer();
 			}
@@ -188,7 +193,10 @@
                private function startPauseTimer(event:MouseEvent):void {
                             var logData:Object = new Object();       
                             JSLog.debug("startPauseTimer(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
-			    if (UsersUtil.amIPresenter()) {
+                            var startTimerSyncEvent = new StartTimerSyncEvent();
+                            startTimerSyncEvent.message = seconds.toString();
+                            dispatcher.dispatchEvent(startTimerSyncEvent);
+                            if (UsersUtil.amIPresenter()) {
                                 if ( event.target.label == "Start" ) {
                                     event.target.label = "Pause";
                                     pause(false);
@@ -206,7 +214,7 @@
                private function startPauseTimer2():void {
                             var logData:Object = new Object();       
                             JSLog.debug("startPauseTimer2(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
-			    if (UsersUtil.amIPresenter()) {
+			                if (!UsersUtil.amIPresenter()) {
                                 if ( btnStart.label == "Start" ) {
                                     btnStart.label = "Pause";
                                     pause(false);

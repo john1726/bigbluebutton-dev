@@ -47,7 +47,7 @@ public class TimerService {
 		return (BigBlueButtonSession) Red5.getConnectionLocal().getAttribute(Constants.SESSION);
 	}
 	
-	public void sendPublicMessage(Map<String, Object> msg) {
+	public void sendPublicTimerMessage(Map<String, Object> msg) {
 		
 		String timerType = msg.get(TimerKeyUtil.TIMER_TYPE).toString(); 
 		String fromUserID = msg.get(TimerKeyUtil.FROM_USERID).toString();
@@ -58,7 +58,8 @@ public class TimerService {
 		String toUserID = msg.get(TimerKeyUtil.TO_USERID).toString();
 		String toUsername = msg.get(TimerKeyUtil.TO_USERNAME).toString();
 		String timerText = msg.get(TimerKeyUtil.MESSAGE).toString();
-		
+        log.warn("sendPublicMessage timerText: " + timerText);		
+
 		Map<String, String> message = new HashMap<String, String>();
 		message.put(TimerKeyUtil.TIMER_TYPE, timerType); 
 		message.put(TimerKeyUtil.FROM_USERID, fromUserID);
@@ -88,40 +89,5 @@ public class TimerService {
 	
 	public void setMaxMessageLength(int maxLength) {
 		maxMessageLength = maxLength;
-}
-	
-
-	public void sendPrivateMessage(Map<String, Object> msg){
-		String timerType = msg.get(TimerKeyUtil.TIMER_TYPE).toString(); 
-		String fromUserID = msg.get(TimerKeyUtil.FROM_USERID).toString();
-		String fromUsername = msg.get(TimerKeyUtil.FROM_USERNAME ).toString();
-		String fromColor = msg.get(TimerKeyUtil.FROM_COLOR).toString();
-		String fromTime = msg.get(TimerKeyUtil.FROM_TIME).toString();   
-		String fromTimezoneOffset = msg.get(TimerKeyUtil.FROM_TZ_OFFSET).toString();
-		String toUserID = msg.get(TimerKeyUtil.TO_USERID).toString();
-		String toUsername = msg.get(TimerKeyUtil.TO_USERNAME).toString();
-		String timerText = msg.get(TimerKeyUtil.MESSAGE).toString();
-		
-		Map<String, String> message = new HashMap<String, String>();
-		message.put(TimerKeyUtil.TIMER_TYPE, timerType); 
-		message.put(TimerKeyUtil.FROM_USERID, fromUserID);
-		message.put(TimerKeyUtil.FROM_USERNAME, fromUsername);
-		message.put(TimerKeyUtil.FROM_COLOR, fromColor);
-		message.put(TimerKeyUtil.FROM_TIME, fromTime);   
-		message.put(TimerKeyUtil.FROM_TZ_OFFSET, fromTimezoneOffset);
-		message.put(TimerKeyUtil.TO_USERID, toUserID);
-		message.put(TimerKeyUtil.TO_USERNAME, toUsername);
-		message.put(TimerKeyUtil.MESSAGE, timerText);
-	
-		String meetingID = Red5.getConnectionLocal().getScope().getName();
-		String requesterID = getBbbSession().getInternalUserID();
-
-		// The message is being ignored in the red5 application to avoid copying it to any another application which that may cause a memory issue
-		if (timerText.length() <= maxMessageLength) {
-			red5BBBInGw.sendPrivateMessage(meetingID, requesterID, message);
-		}
-		else {
-			log.warn("sendPrivateMessage maximum allowed message length exceeded (length: [" + timerText.length() + "], message: [" + timerText + "])");
-		}
-	}
+    }
 }
