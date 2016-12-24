@@ -58,6 +58,7 @@ public class ChatService {
 		String toUserID = msg.get(ChatKeyUtil.TO_USERID).toString();
 		String toUsername = msg.get(ChatKeyUtil.TO_USERNAME).toString();
 		String chatText = msg.get(ChatKeyUtil.MESSAGE).toString();
+        log.warn("sendPublicMessage chatText: " + chatText);		
 		
 		Map<String, String> message = new HashMap<String, String>();
 		message.put(ChatKeyUtil.CHAT_TYPE, chatType); 

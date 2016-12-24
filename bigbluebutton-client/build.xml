@@ -426,7 +426,7 @@
 			<fileset dir="${PROD_RESOURCES_DIR}/lib"/>
 		</copy> 
 		<copy file="${PROD_RESOURCES_DIR}/BigBlueButtonTest.html" todir="${OUTPUT_DIR}" overwrite="true"/>
-		<copy file="${PROD_RESOURCES_DIR}/BigBlueButton.html" todir="${OUTPUT_DIR}" overwrite="true"/>
+		<copy file="${PROD_RESOURCES_DIR}/TuberEducation.html" todir="${OUTPUT_DIR}" overwrite="true"/>
 		<copy file="${PROD_RESOURCES_DIR}/DeskshareStandalone.html" todir="${OUTPUT_DIR}" overwrite="true"/>
 		<copy file="${PROD_RESOURCES_DIR}/bbb.gif" todir="${OUTPUT_DIR}" overwrite="true"/>	
 		<copy file="${PROD_RESOURCES_DIR}/get_flash_player.gif" todir="${OUTPUT_DIR}" overwrite="true"/>	
@@ -455,7 +455,7 @@
 	<target name="generate-html-wrapper">
 		<html-wrapper
 			title="BigBlueButton"
-			file="BigBlueButton.html"
+			file="TuberEducation.html"
 			height="100%"
 			width="100%"
 			bgcolor="grey"

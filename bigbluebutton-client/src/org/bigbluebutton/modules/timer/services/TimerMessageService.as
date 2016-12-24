@@ -16,7 +16,7 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.bigbluebutton.modules.chat.services
+package org.bigbluebutton.modules.timer.services
 {
   import flash.events.IEventDispatcher;
   import flash.external.ExternalInterface;
@@ -26,14 +26,14 @@ package org.bigbluebutton.modules.chat.services
   import org.bigbluebutton.core.BBB;
   import org.bigbluebutton.core.UsersUtil;
   import org.bigbluebutton.core.model.MeetingModel;
-  import org.bigbluebutton.modules.chat.ChatConstants;
-  import org.bigbluebutton.modules.chat.events.PublicChatMessageEvent;
-  import org.bigbluebutton.modules.chat.vo.ChatMessageVO;
+  import org.bigbluebutton.modules.timer.TimerConstants;
+  import org.bigbluebutton.modules.timer.events.StartTimerSyncEvent;
+  import org.bigbluebutton.modules.timer.vo.TimerMessageVO;
   import org.bigbluebutton.util.i18n.ResourceUtil;
 
-  public class ChatMessageService
+  public class TimerMessageService
   {
-	private static const LOGGER:ILogger = getClassLogger(ChatMessageService);      
+	private static const LOGGER:ILogger = getClassLogger(TimerMessageService);      
     
     public var sender:MessageSender;
     public var receiver:MessageReceiver;
@@ -42,8 +42,8 @@ package org.bigbluebutton.modules.chat.services
     public function sendPublicMessageFromApi(message:Object):void
     {
       LOGGER.debug("sendPublicMessageFromApi");
-      var msgVO:ChatMessageVO = new ChatMessageVO();
-      msgVO.chatType = ChatConstants.PUBLIC_CHAT;
+      var msgVO:TimerMessageVO = new TimerMessageVO();
+      msgVO.timerType = TimerConstants.PUBLIC_TIMER;
       msgVO.fromUserID = message.fromUserID;
       msgVO.fromUsername = message.fromUsername;
       msgVO.fromColor = message.fromColor;
@@ -58,8 +58,8 @@ package org.bigbluebutton.modules.chat.services
     public function sendPrivateMessageFromApi(message:Object):void
     {
 	  LOGGER.debug("sendPrivateMessageFromApi");
-      var msgVO:ChatMessageVO = new ChatMessageVO();
-      msgVO.chatType = ChatConstants.PUBLIC_CHAT;
+      var msgVO:TimerMessageVO = new TimerMessageVO();
+      msgVO.timerType = TimerConstants.PUBLIC_TIMER;
       msgVO.fromUserID = message.fromUserID;
       msgVO.fromUsername = message.fromUsername;
       msgVO.fromColor = message.fromColor;
@@ -75,16 +75,16 @@ package org.bigbluebutton.modules.chat.services
 
     }
     
-    public function sendPublicMessage(message:ChatMessageVO):void {
+    public function sendPublicMessage(message:TimerMessageVO):void {
       sender.sendPublicMessage(message);
     }
     
-    public function sendPrivateMessage(message:ChatMessageVO):void {
+    public function sendPrivateMessage(message:TimerMessageVO):void {
       sender.sendPrivateMessage(message);
     }
     
-    public function getPublicChatMessages():void {
-      sender.getPublicChatMessages();
+    public function getPublicTimerMessages():void {
+      sender.getPublicTimerMessages();
     }
     
     private static const SPACE:String = " ";
@@ -93,8 +93,8 @@ package org.bigbluebutton.modules.chat.services
 	  LOGGER.debug("sendWelcomeMessage");
       var welcome:String = BBB.initUserConfigManager().getWelcomeMessage();
       if (welcome != "") {
-        var welcomeMsg:ChatMessageVO = new ChatMessageVO();
-        welcomeMsg.chatType = ChatConstants.PUBLIC_CHAT;
+        var welcomeMsg:TimerMessageVO = new TimerMessageVO();
+        welcomeMsg.timerType = TimerConstants.PUBLIC_TIMER;
         welcomeMsg.fromUserID = SPACE;
         welcomeMsg.fromUsername = SPACE;
         welcomeMsg.fromColor = "86187";
@@ -104,7 +104,7 @@ package org.bigbluebutton.modules.chat.services
         welcomeMsg.toUsername = SPACE;
         welcomeMsg.message = welcome;
         
-        var welcomeMsgEvent:PublicChatMessageEvent = new PublicChatMessageEvent(PublicChatMessageEvent.PUBLIC_CHAT_MESSAGE_EVENT);
+        var welcomeMsgEvent:StartTimerSyncEvent = new StartTimerSyncEvent(StartTimerSyncEvent.SYNC_START_TIMER);
         welcomeMsgEvent.message = welcomeMsg;
         welcomeMsgEvent.history = false;
         dispatcher.dispatchEvent(welcomeMsgEvent);
@@ -115,8 +115,8 @@ package org.bigbluebutton.modules.chat.services
       
       if (UsersUtil.amIModerator()) {
         if (MeetingModel.getInstance().modOnlyMessage != null) {
-          var moderatorOnlyMsg:ChatMessageVO = new ChatMessageVO();
-          moderatorOnlyMsg.chatType = ChatConstants.PUBLIC_CHAT;
+          var moderatorOnlyMsg:TimerMessageVO = new TimerMessageVO();
+          moderatorOnlyMsg.timerType = TimerConstants.PUBLIC_TIMER;
           moderatorOnlyMsg.fromUserID = SPACE;
           moderatorOnlyMsg.fromUsername = SPACE;
           moderatorOnlyMsg.fromColor = "86187";
@@ -126,7 +126,7 @@ package org.bigbluebutton.modules.chat.services
           moderatorOnlyMsg.toUsername = SPACE;
           moderatorOnlyMsg.message = MeetingModel.getInstance().modOnlyMessage;
           
-          var moderatorOnlyMsgEvent:PublicChatMessageEvent = new PublicChatMessageEvent(PublicChatMessageEvent.PUBLIC_CHAT_MESSAGE_EVENT);
+          var moderatorOnlyMsgEvent:StartTimerSyncEvent = new StartTimerSyncEvent(StartTimerSyncEvent.SYNC_START_TIMER);
           moderatorOnlyMsgEvent.message = moderatorOnlyMsg;
           moderatorOnlyMsgEvent.history = false;
           dispatcher.dispatchEvent(moderatorOnlyMsgEvent);

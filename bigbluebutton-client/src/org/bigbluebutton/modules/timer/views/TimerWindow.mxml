@@ -194,7 +194,7 @@
                             var logData:Object = new Object();       
                             JSLog.debug("startPauseTimer(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
                             var startTimerSyncEvent = new StartTimerSyncEvent();
-                            startTimerSyncEvent.message = seconds.toString();
+                            startTimerSyncEvent.message.message = seconds.toString();
                             dispatcher.dispatchEvent(startTimerSyncEvent);
                             if (UsersUtil.amIPresenter()) {
                                 if ( event.target.label == "Start" ) {

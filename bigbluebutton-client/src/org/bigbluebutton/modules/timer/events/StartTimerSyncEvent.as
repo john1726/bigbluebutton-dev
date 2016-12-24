@@ -20,11 +20,14 @@ package org.bigbluebutton.modules.timer.events
 {
 	import flash.events.Event;
 
+	import org.bigbluebutton.modules.timer.vo.TimerMessageVO;
+
 	public class StartTimerSyncEvent extends Event
 	{
 		public static const SYNC_START_TIMER:String = "SYNC_START_TIMER";
 
-        public var message: String;
+        public var message:TimerMessageVO;
+		public var history:Boolean;
 		
 		public function StartTimerSyncEvent()
 		{

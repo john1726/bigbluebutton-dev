@@ -58,7 +58,7 @@ public class TimerService {
 		String toUserID = msg.get(TimerKeyUtil.TO_USERID).toString();
 		String toUsername = msg.get(TimerKeyUtil.TO_USERNAME).toString();
 		String timerText = msg.get(TimerKeyUtil.MESSAGE).toString();
-        log.warn("sendPublicMessage timerText: " + timerText);		
+        log.warn("sendPublicTimerMessage timerText: " + timerText);		
 
 		Map<String, String> message = new HashMap<String, String>();
 		message.put(TimerKeyUtil.TIMER_TYPE, timerType); 
@@ -76,7 +76,7 @@ public class TimerService {
 
 		// The message is being ignored in the red5 application to avoid copying it to any another application which that may cause a memory issue
 		if (timerText.length() <= maxMessageLength) {
-			red5BBBInGw.sendPublicMessage(meetingID, requesterID, message);
+			red5BBBInGw.sendPublicTimerMessage(meetingID, requesterID, message);
 		}
 		else {
 			log.warn("sendPublicMessage maximum allowed message length exceeded (length: [" + timerText.length() + "], message: [" + timerText + "])");
