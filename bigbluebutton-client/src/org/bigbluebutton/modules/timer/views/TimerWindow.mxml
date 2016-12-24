@@ -80,16 +80,20 @@
 			
             import org.bigbluebutton.main.api.JSLog;
             import org.as3commons.logging.util.jsonXify;
+			import org.as3commons.lang.StringUtils;
 			import org.as3commons.logging.api.ILogger;
 			import org.as3commons.logging.api.getClassLogger;
 			import org.bigbluebutton.common.IBbbModuleWindow;
 			import org.bigbluebutton.common.Images;
 			import org.bigbluebutton.common.events.LocaleChangeEvent;
 			import org.bigbluebutton.core.UsersUtil;
+			import org.bigbluebutton.modules.timer.TimerConstants;
+			import org.bigbluebutton.modules.timer.TimerUtil;
 			import org.bigbluebutton.modules.timer.events.StartTimerModuleEvent;
 			import org.bigbluebutton.modules.timer.events.StopTimerModuleEvent;
 			import org.bigbluebutton.modules.timer.events.StartTimerSyncEvent;
 			import org.bigbluebutton.modules.timer.events.StopTimerSyncEvent;
+			import org.bigbluebutton.modules.timer.events.SendPublicTimerMessageEvent;
 			import org.bigbluebutton.core.events.LockControlEvent;
 			import org.bigbluebutton.core.events.VoiceConfEvent;
 			import org.bigbluebutton.core.managers.TimerManager;
@@ -97,10 +101,12 @@
 			import org.bigbluebutton.main.events.ShortcutEvent;
 			import org.bigbluebutton.main.views.MainCanvas;
 			import org.bigbluebutton.util.i18n.ResourceUtil;
+			import org.bigbluebutton.modules.timer.vo.TimerMessageVO;
+			import org.bigbluebutton.modules.polling.events.StartCustomPollEvent;
 			import org.bigbluebutton.modules.timer.model.TimerOptions;
 
 			private static const LOGGER:ILogger = getClassLogger(TimerWindow);
-			private var dispatcher:Dispatcher;
+			private var globalDispatcher:Dispatcher = new Dispatcher();
 
                         private const TIMER_INTERVAL:int = 1000;
                         private var stopwatch:Timer;
@@ -123,8 +129,6 @@
 			public var partOptions:TimerOptions;
 
 			private function onCreationComplete():void {
-		        dispatcher = new Dispatcher();
-
                 counter.styleName = "selectedStyle";
 
                 stopwatch = new Timer(TIMER_INTERVAL);
@@ -190,26 +194,70 @@
                  }
                }
 
+      private function sendStartCustomPollEvent(answers:Array):void {
+          var dispatcher:Dispatcher = new Dispatcher();
+          dispatchEvent(new StartCustomPollEvent("Custom", answers));				
+      }
+
+      private function sendPublicTimerMessage(message:String):void {
+        var logData:Object = new Object();       
+        JSLog.debug("sendPublicTimerMessage(): UsersUtil.amIPresenter()", logData);
+
+		//var pollRegex:RegExp = /^@poll\s+?((?:[^,]+?\s*?,\s*?)*?[^,]+?)\s*?$/;
+		var pollRegex:RegExp = /^@poll\s+?(.+)\s*?$/;
+		var matchedArray:Array = message.match(pollRegex);
+		
+		if (UsersUtil.amIPresenter() && pollRegex.test(message)) {
+            JSLog.debug("sendPublicTimerMessage(): UsersUtil.amIPresenter()", logData);
+			var tmpAnswers: Array = matchedArray[1].split(",");
+			var answers:Array = new Array();
+			for (var i:int = 0; i < tmpAnswers.length; i++) {
+				var t:String = tmpAnswers[i] as String;
+				answers.push(StringUtils.trim(t));
+			}
+			sendStartCustomPollEvent(answers);
+		} else {
+            JSLog.debug("sendPublicTimerMessage(): else", logData);
+			var publicEvent:SendPublicTimerMessageEvent = new SendPublicTimerMessageEvent(SendPublicTimerMessageEvent.SEND_PUBLIC_TIMER_MESSAGE_EVENT);
+			var cm:TimerMessageVO = new TimerMessageVO();
+			cm.timerType = TimerConstants.PUBLIC_TIMER;
+			cm.fromUserID = UsersUtil.getMyUserID();
+			cm.fromUsername = UsersUtil.getMyUsername();
+			// get the color value from ColorPicker
+			//cm.fromColor =  cmpColorPicker.selectedColor.toString();
+			// Get the current UTC time and the timezone for this sender.
+			// The receiver will have to convert this to local time.
+			var now:Date = new Date();
+			cm.fromTime = now.valueOf();
+			cm.fromTimezoneOffset = now.getTimezoneOffset();
+			
+			//cm.message = TimerUtil.parseURLs(TimerUtil.cleanup(message));
+			cm.message = ExternalInterface.call('parseURLs', (TimerUtil.cleanup(message)));
+			
+			publicEvent.timerMessage = cm;
+			globalDispatcher.dispatchEvent(publicEvent);			
+		}
+      }
+
                private function startPauseTimer(event:MouseEvent):void {
-                            var logData:Object = new Object();       
-                            JSLog.debug("startPauseTimer(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
-                            var startTimerSyncEvent = new StartTimerSyncEvent();
-                            startTimerSyncEvent.message.message = seconds.toString();
-                            dispatcher.dispatchEvent(startTimerSyncEvent);
-                            if (UsersUtil.amIPresenter()) {
-                                if ( event.target.label == "Start" ) {
-                                    event.target.label = "Pause";
-                                    pause(false);
-                                    stopwatch.start();
-                                    JSLog.debug("startPauseTimer(): Start", logData);
-                                } else {
-                                    event.target.label = "Start";
-                                    pause(true);
-                                    stopwatch.stop();
-                                    JSLog.debug("startPauseTimer(): Pause", logData);
-                                }
-                            }
+                    var logData:Object = new Object();       
+                    JSLog.debug("startPauseTimer(): UsersUtil.amIPresenter(): " + UsersUtil.amIPresenter(), logData);
+                    sendPublicTimerMessage(seconds.toString());
+
+                    if (UsersUtil.amIPresenter()) {
+                        if ( event.target.label == "Start" ) {
+                            event.target.label = "Pause";
+                            pause(false);
+                            stopwatch.start();
+                            JSLog.debug("startPauseTimer(): Start", logData);
+                        } else {
+                            event.target.label = "Start";
+                            pause(true);
+                            stopwatch.stop();
+                            JSLog.debug("startPauseTimer(): Pause", logData);
                         }
+                    }
+                }
 
                private function startPauseTimer2():void {
                             var logData:Object = new Object();       

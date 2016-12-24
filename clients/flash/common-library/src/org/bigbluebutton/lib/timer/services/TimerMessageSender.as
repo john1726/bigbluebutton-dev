@@ -23,26 +23,27 @@ package org.bigbluebutton.lib.timer.services {
 		public function getPublicTimerMessages():void {
 			trace(LOG + "Sending [timer.getPublicMessages] to server.");
 			userSession.mainConnection.sendMessage("timer.sendPublicTimerHistory",
-												   function(result:String):void { // On successful result
-													   publicTimerMessagesOnSuccessSignal.dispatch(result);
-												   },
-												   function(status:String):void { // status - On error occurred
-													   publicTimerMessagesOnFailureSignal.dispatch(status);
-												   }
-												   );
+				function(result:String):void { // On successful result
+					publicTimerMessagesOnSuccessSignal.dispatch(result);
+				},
+				function(status:String):void { // status - On error occurred
+					publicTimerMessagesOnFailureSignal.dispatch(status);
+				}
+			);
 		}
 		
+        //TODO: change this name to sendPublicTimerMessage?
 		public function sendPublicMessage(message:TimerMessageVO):void {
 			trace(LOG + "Sending [timer.sendPublicMessage] to server. [" + message.message + "]");
 			userSession.mainConnection.sendMessage("timer.sendPublicMessage",
-												   function(result:String):void { // On successful result
-													   successSendingMessageSignal.dispatch(result);
-												   },
-												   function(status:String):void { // status - On error occurred
-													   failureSendingMessageSignal.dispatch(status);
-												   },
-												   message.toObj()
-												   );
+				function(result:String):void { // On successful result
+					successSendingMessageSignal.dispatch(result);
+				},
+				function(status:String):void { // status - On error occurred
+					failureSendingMessageSignal.dispatch(status);
+				},
+				message.toObj()
+			);
 		}
 		
 		private var _publicTimerMessagesOnSuccessSignal:Signal = new Signal();

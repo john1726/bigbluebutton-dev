@@ -47,7 +47,7 @@ package org.bigbluebutton.lib.timer.services {
 		public function getPublicTimerMessages():void {
 			timerMessageSender.getPublicTimerMessages();
 		}
-		
+        //TODO: change this to sendPublicMessage?
 		public function sendPublicMessage(message:TimerMessageVO):void {
 			timerMessageSender.sendPublicMessage(message);
 		}

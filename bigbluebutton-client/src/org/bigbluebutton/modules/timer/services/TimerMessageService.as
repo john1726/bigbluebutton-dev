@@ -55,32 +55,8 @@ package org.bigbluebutton.modules.timer.services
       sendPublicMessage(msgVO);
     }    
     
-    public function sendPrivateMessageFromApi(message:Object):void
-    {
-	  LOGGER.debug("sendPrivateMessageFromApi");
-      var msgVO:TimerMessageVO = new TimerMessageVO();
-      msgVO.timerType = TimerConstants.PUBLIC_TIMER;
-      msgVO.fromUserID = message.fromUserID;
-      msgVO.fromUsername = message.fromUsername;
-      msgVO.fromColor = message.fromColor;
-      msgVO.fromTime = message.fromTime;
-      msgVO.fromTimezoneOffset = message.fromTimezoneOffset;
-      
-      msgVO.toUserID = message.toUserID;
-      msgVO.toUsername = message.toUsername;
-      
-      msgVO.message = message.message;
-      
-      sendPrivateMessage(msgVO);
-
-    }
-    
     public function sendPublicMessage(message:TimerMessageVO):void {
       sender.sendPublicMessage(message);
-    }
-    
-    public function sendPrivateMessage(message:TimerMessageVO):void {
-      sender.sendPrivateMessage(message);
     }
     
     public function getPublicTimerMessages():void {
