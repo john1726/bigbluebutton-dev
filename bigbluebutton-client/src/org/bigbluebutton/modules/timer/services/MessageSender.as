@@ -32,9 +32,9 @@ package org.bigbluebutton.modules.timer.services
     
     public var dispatcher:IEventDispatcher;
     
-    public function getPublicMessages():void
+    public function getPublicTimerMessages():void
     {  
-      LOGGER.debug("Sending [timer.getPublicMessages] to server.");
+      LOGGER.debug("Sending [timer.getPublicTimerMessages] to server.");
       var _nc:ConnectionManager = BBB.initConnectionManager();
       _nc.sendMessage("timer.sendPublicTimerHistory", 
         function(result:String):void { // On successful result

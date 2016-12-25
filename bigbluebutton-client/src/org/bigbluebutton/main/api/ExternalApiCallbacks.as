@@ -89,6 +89,7 @@ package org.bigbluebutton.main.api
         ExternalInterface.addCallback("switchLayout", handleSwitchLayoutRequest);
         ExternalInterface.addCallback("sendPublicChatRequest", handleSendPublicChatRequest);  
         ExternalInterface.addCallback("sendPrivateChatRequest", handleSendPrivateChatRequest); 
+        ExternalInterface.addCallback("sendPublicTimerRequest", handleSendPublicTimerRequest);  
         ExternalInterface.addCallback("lockLayout", handleSendLockLayoutRequest);
         ExternalInterface.addCallback("displayPresentationRequest", handleDisplayPresentationRequest);
         ExternalInterface.addCallback("deletePresentationRequest", handleDeletePresentationRequest);
@@ -317,6 +318,36 @@ package org.bigbluebutton.main.api
       
       _dispatcher.dispatchEvent(chatEvent);
     }      
+
+    /**
+    * Request to send a public timer
+    *  fromUserID - the external user id for the sender
+    *  fontColor  - the color of the font to display the message
+    *  localeLang - the 2-char locale code (e.g. en) for the sender
+    *  message    - the message to send
+    * 
+    */
+    private function handleSendPublicTimerRequest(fontColor:String, localeLang:String, message:String):void {
+      var timerEvent:CoreEvent = new CoreEvent(EventConstants.SEND_PUBLIC_TIMER_REQ);      
+      var payload:Object = new Object();      
+      payload.fromColor = fontColor;
+      payload.fromLang = localeLang;
+      
+      var now:Date = new Date();
+      payload.fromTime = now.getTime();
+      payload.fromTimezoneOffset = now.getTimezoneOffset();
+      
+      payload.message = message;
+      
+      // Need to convert the internal user id to external user id in case the 3rd-party app passed 
+      // an external user id for it's own use.
+      payload.fromUserID = UsersUtil.getMyUserID();
+      payload.fromUsername = UsersUtil.getUserName(payload.fromUserID);
+      
+      timerEvent.message = payload;
+      
+      _dispatcher.dispatchEvent(timerEvent);
+    }
 
     private function handleSwitchLayoutRequest(newLayout:String):void {
       var layoutEvent:CoreEvent = new CoreEvent(EventConstants.SWITCH_LAYOUT_REQ);

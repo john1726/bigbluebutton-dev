@@ -28,7 +28,8 @@ package org.bigbluebutton.modules.timer.events
 
         public var message:TimerMessageVO;
 		public var history:Boolean;
-		
+
+        //TODO: add arguments to ctor?
 		public function StartTimerSyncEvent()
 		{
 			super(SYNC_START_TIMER, true, false);

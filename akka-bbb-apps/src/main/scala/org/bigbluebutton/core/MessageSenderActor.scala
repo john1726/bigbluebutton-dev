@@ -7,6 +7,7 @@ import akka.actor.Props
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.common.messages.MessagingConstants
 import org.bigbluebutton.core.pubsub.senders.ChatMessageToJsonConverter
+import org.bigbluebutton.core.pubsub.senders.TimerMessageToJsonConverter
 import org.bigbluebutton.common.messages.StartRecordingVoiceConfRequestMessage
 import org.bigbluebutton.common.messages.StopRecordingVoiceConfRequestMessage
 import org.bigbluebutton.core.pubsub.senders.MeetingMessageToJsonConverter
@@ -44,6 +45,8 @@ class MessageSenderActor(val meetingId: String, val service: MessageSender)
     case msg: GetChatHistoryReply => handleGetChatHistoryReply(msg)
     case msg: SendPublicMessageEvent => handleSendPublicMessageEvent(msg)
     case msg: SendPrivateMessageEvent => handleSendPrivateMessageEvent(msg)
+    case msg: GetTimerHistoryReply => handleGetTimerHistoryReply(msg)
+    case msg: SendPublicTimerMessageEvent => handleSendPublicTimerMessageEvent(msg)
     case msg: MeetingCreated => handleMeetingCreated(msg)
     case msg: VoiceRecordingStarted => handleVoiceRecordingStarted(msg)
     case msg: VoiceRecordingStopped => handleVoiceRecordingStopped(msg)
@@ -135,6 +138,16 @@ class MessageSenderActor(val meetingId: String, val service: MessageSender)
   private def handleSendPrivateMessageEvent(msg: SendPrivateMessageEvent) {
     val json = ChatMessageToJsonConverter.sendPrivateMessageEventToJson(msg)
     service.send(MessagingConstants.FROM_CHAT_CHANNEL, json)
+  }
+
+  private def handleGetTimerHistoryReply(msg: GetTimerHistoryReply) {
+    val json = TimerMessageToJsonConverter.getTimerHistoryReplyToJson(msg)
+    service.send(MessagingConstants.FROM_TIMER_CHANNEL, json)
+  }
+
+  private def handleSendPublicTimerMessageEvent(msg: SendPublicTimerMessageEvent) {
+    val json = TimerMessageToJsonConverter.sendPublicTimerMessageEventToJson(msg)
+    service.send(MessagingConstants.FROM_TIMER_CHANNEL, json)
   }
 
   private def handleStartRecordingVoiceConf(msg: StartRecordingVoiceConf) {

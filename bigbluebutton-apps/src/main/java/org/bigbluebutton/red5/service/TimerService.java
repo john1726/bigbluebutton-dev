@@ -79,7 +79,7 @@ public class TimerService {
 			red5BBBInGw.sendPublicTimerMessage(meetingID, requesterID, message);
 		}
 		else {
-			log.warn("sendPublicMessage maximum allowed message length exceeded (length: [" + timerText.length() + "], message: [" + timerText + "])");
+			log.warn("sendPublicTimerMessage maximum allowed message length exceeded (length: [" + timerText.length() + "], message: [" + timerText + "])");
 		}
 	}
 	

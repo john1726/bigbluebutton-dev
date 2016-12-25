@@ -124,6 +124,7 @@ public class MeetingClientMessageSender {
 		args.put("disableMic", msg.permissions.get(Constants.PERM_DISABLE_MIC));
 		args.put("disablePrivateChat", msg.permissions.get(Constants.PERM_DISABLE_PRIVCHAT));
 		args.put("disablePublicChat", msg.permissions.get(Constants.PERM_DISABLE_PUBCHAT));
+        //TODO: add disablePublicTimer?
 	    args.put("lockedLayout", msg.permissions.get(Constants.PERM_LOCKED_LAYOUT));
 	    args.put("lockOnJoin", msg.permissions.get(Constants.PERM_LOCK_ON_JOIN));
 	    args.put("lockOnJoinConfigurable", msg.permissions.get(Constants.PERM_LOCK_ON_JOIN_CONFIG));

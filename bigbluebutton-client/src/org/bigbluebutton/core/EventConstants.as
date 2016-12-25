@@ -33,6 +33,7 @@ package org.bigbluebutton.core
     public static const UNLOCK_LAYOUT_REQ:String          = 'UnlockLayoutRequest';
     public static const SEND_PUBLIC_CHAT_REQ:String       = 'SendPublicChatRequest';
     public static const SEND_PRIVATE_CHAT_REQ:String      = 'SendPrivateChatRequest';
+    public static const SEND_PUBLIC_TIMER_REQ:String       = 'SendPublicTimerRequest';
     
     
     /** Events to External JS **/
@@ -49,6 +50,7 @@ package org.bigbluebutton.core
     public static const NEW_ROLE:String                   = 'NewRoleEvent';
     public static const NEW_PRIVATE_CHAT:String           = 'NewPrivateChatEvent';
     public static const NEW_PUBLIC_CHAT:String            = 'NewPublicChatEvent';
+    public static const NEW_PUBLIC_TIMER:String           = 'NewPublicTimerEvent';
     public static const SWITCHED_LAYOUT:String            = 'SwitchedLayoutEvent';
     public static const USER_JOINED_VOICE:String          = 'UserJoinedVoiceEvent';
     public static const USER_LEFT_VOICE:String            = 'UserLeftVoiceEvent';

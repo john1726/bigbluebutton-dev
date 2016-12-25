@@ -50,9 +50,6 @@ package org.bigbluebutton.modules.timer.services
         case "TimerReceivePublicMessageCommand":
           handleTimerReceivePublicMessageCommand(message);
           break;			
-        case "TimerReceivePrivateMessageCommand":
-          handleTimerReceivePrivateMessageCommand(message);
-          break;	
         case "TimerRequestMessageHistoryReply":
           handleTimerRequestMessageHistoryReply(message);
           break;	
@@ -89,8 +86,10 @@ package org.bigbluebutton.modules.timer.services
       msg.toUserID = message.toUserID;
       msg.toUsername = message.toUsername;
       msg.message = message.message;
-      
-      var pcEvent:StartTimerSyncEvent = new StartTimerSyncEvent(StartTimerSyncEvent.SYNC_START_TIMER);
+
+      //TODO:?
+      //var pcEvent:StartTimerSyncEvent = new StartTimerSyncEvent(StartTimerSyncEvent.SYNC_START_TIMER);
+      var pcEvent:StartTimerSyncEvent = new StartTimerSyncEvent();
       pcEvent.message = msg;
       pcEvent.history = history;
       dispatcher.dispatchEvent(pcEvent);

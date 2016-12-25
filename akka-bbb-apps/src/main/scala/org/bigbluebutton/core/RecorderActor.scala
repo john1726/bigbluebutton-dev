@@ -8,6 +8,7 @@ import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.api._
 import scala.collection.JavaConversions._
 import org.bigbluebutton.core.service.recorder.RecorderApplication
+/** TODO: Add event for timer here too?  **/
 import org.bigbluebutton.core.recorders.events.PublicChatRecordEvent
 import org.bigbluebutton.core.recorders.events.ConversionCompletedPresentationRecordEvent
 import org.bigbluebutton.core.recorders.events.GotoSlidePresentationRecordEvent

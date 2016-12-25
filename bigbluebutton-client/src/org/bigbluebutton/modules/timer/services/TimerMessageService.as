@@ -52,11 +52,11 @@ package org.bigbluebutton.modules.timer.services
 
       msgVO.message = message.message;
       
-      sendPublicMessage(msgVO);
+      sendPublicTimerMessage(msgVO);
     }    
     
-    public function sendPublicMessage(message:TimerMessageVO):void {
-      sender.sendPublicMessage(message);
+    public function sendPublicTimerMessage(message:TimerMessageVO):void {
+      sender.sendPublicTimerMessage(message);
     }
     
     public function getPublicTimerMessages():void {
@@ -80,7 +80,9 @@ package org.bigbluebutton.modules.timer.services
         welcomeMsg.toUsername = SPACE;
         welcomeMsg.message = welcome;
         
-        var welcomeMsgEvent:StartTimerSyncEvent = new StartTimerSyncEvent(StartTimerSyncEvent.SYNC_START_TIMER);
+        //TODO:?
+        //var welcomeMsgEvent:StartTimerSyncEvent = new StartTimerSyncEvent(StartTimerSyncEvent.SYNC_START_TIMER);
+        var welcomeMsgEvent:StartTimerSyncEvent = new StartTimerSyncEvent();
         welcomeMsgEvent.message = welcomeMsg;
         welcomeMsgEvent.history = false;
         dispatcher.dispatchEvent(welcomeMsgEvent);
@@ -102,7 +104,9 @@ package org.bigbluebutton.modules.timer.services
           moderatorOnlyMsg.toUsername = SPACE;
           moderatorOnlyMsg.message = MeetingModel.getInstance().modOnlyMessage;
           
-          var moderatorOnlyMsgEvent:StartTimerSyncEvent = new StartTimerSyncEvent(StartTimerSyncEvent.SYNC_START_TIMER);
+          //TODO:?  
+          //var moderatorOnlyMsgEvent:StartTimerSyncEvent = new StartTimerSyncEvent(StartTimerSyncEvent.SYNC_START_TIMER);
+          var moderatorOnlyMsgEvent:StartTimerSyncEvent = new StartTimerSyncEvent();
           moderatorOnlyMsgEvent.message = moderatorOnlyMsg;
           moderatorOnlyMsgEvent.history = false;
           dispatcher.dispatchEvent(moderatorOnlyMsgEvent);

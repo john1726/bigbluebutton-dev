@@ -71,6 +71,11 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         <property name="red5Publisher"> <ref bean="red5Publisher"/></property>
         <property name="maxMessageLength" value="1024"/>
     </bean>
+
+    <bean id="timer.service" class="org.bigbluebutton.red5.service.TimerService">
+        <property name="red5Publisher"> <ref bean="red5Publisher"/></property>
+        <property name="maxMessageLength" value="1024"/>
+    </bean>
     
     <bean id="participants.service" class="org.bigbluebutton.red5.service.ParticipantsService">
         <property name="red5Publisher"> <ref bean="red5Publisher"/> </property>

@@ -33,9 +33,9 @@ package org.bigbluebutton.lib.timer.services {
 		}
 		
         //TODO: change this name to sendPublicTimerMessage?
-		public function sendPublicMessage(message:TimerMessageVO):void {
-			trace(LOG + "Sending [timer.sendPublicMessage] to server. [" + message.message + "]");
-			userSession.mainConnection.sendMessage("timer.sendPublicMessage",
+		public function sendPublicTimerMessage(message:TimerMessageVO):void {
+			trace(LOG + "Sending [timer.sendPublicTimerMessage] to server. [" + message.message + "]");
+			userSession.mainConnection.sendMessage("timer.sendPublicTimerMessage",
 				function(result:String):void { // On successful result
 					successSendingMessageSignal.dispatch(result);
 				},

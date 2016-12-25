@@ -1,6 +1,7 @@
 package org.bigbluebutton.lib.main.commands {
 	
 	import org.bigbluebutton.lib.chat.services.IChatMessageService;
+	import org.bigbluebutton.lib.timer.services.ITimerMessageService;
 	import org.bigbluebutton.lib.deskshare.services.IDeskshareConnection;
 	import org.bigbluebutton.lib.main.models.IConferenceParameters;
 	import org.bigbluebutton.lib.main.models.IUserSession;
@@ -43,6 +44,9 @@ package org.bigbluebutton.lib.main.commands {
 		public var chatService:IChatMessageService;
 		
 		[Inject]
+		public var timerService:ITimerMessageService;
+
+		[Inject]
 		public var presentationService:IPresentationService;
 		
 		[Inject]
@@ -75,6 +79,7 @@ package org.bigbluebutton.lib.main.commands {
 		private function successJoiningMeeting():void {
 			// Set up remaining message sender and receivers:
 			chatService.setupMessageSenderReceiver();
+			timerService.setupMessageSenderReceiver();
 			presentationService.setupMessageSenderReceiver();
 			// set up and connect the remaining connections
 			videoConnection.uri = userSession.config.getConfigFor("VideoConfModule").@uri + "/" + conferenceParameters.room;
@@ -92,6 +97,8 @@ package org.bigbluebutton.lib.main.commands {
 			// Query the server for chat, users, and presentation info
 			chatService.sendWelcomeMessage();
 			chatService.getPublicChatMessages();
+            //TODO: ? 			timerService.sendWelcomeMessage();
+			timerService.getPublicTimerMessages();
 			presentationService.getPresentationInfo();
 			userSession.userList.allUsersAddedSignal.add(successUsersAdded);
 			usersService.queryForParticipants();
