@@ -52,7 +52,6 @@ public class TimerService {
 		String timerType = msg.get(TimerKeyUtil.TIMER_TYPE).toString(); 
 		String fromUserID = msg.get(TimerKeyUtil.FROM_USERID).toString();
 		String fromUsername = msg.get(TimerKeyUtil.FROM_USERNAME ).toString();
-		String fromColor = msg.get(TimerKeyUtil.FROM_COLOR).toString();
 		String fromTime = msg.get(TimerKeyUtil.FROM_TIME).toString();   
 		String fromTimezoneOffset = msg.get(TimerKeyUtil.FROM_TZ_OFFSET).toString();
 		String toUserID = msg.get(TimerKeyUtil.TO_USERID).toString();
@@ -64,7 +63,6 @@ public class TimerService {
 		message.put(TimerKeyUtil.TIMER_TYPE, timerType); 
 		message.put(TimerKeyUtil.FROM_USERID, fromUserID);
 		message.put(TimerKeyUtil.FROM_USERNAME, fromUsername);
-		message.put(TimerKeyUtil.FROM_COLOR, fromColor);
 		message.put(TimerKeyUtil.FROM_TIME, fromTime);   
 		message.put(TimerKeyUtil.FROM_TZ_OFFSET, fromTimezoneOffset);
 		message.put(TimerKeyUtil.TO_USERID, toUserID);
