@@ -195,8 +195,7 @@
                }
 
       private function sendStartCustomPollEvent(answers:Array):void {
-          var dispatcher:Dispatcher = new Dispatcher();
-          dispatchEvent(new StartCustomPollEvent("Custom", answers));				
+          globalDispatcher.dispatchEvent(new StartCustomPollEvent("Custom", answers));
       }
 
       private function sendPublicTimerMessage(message:String):void {

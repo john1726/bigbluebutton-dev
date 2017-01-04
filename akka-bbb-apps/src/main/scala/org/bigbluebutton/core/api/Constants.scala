@@ -73,6 +73,7 @@ object Constants {
   val PERMISSIONS = "permissions"
   val VALID = "valid"
   val CHAT_HISTORY = "chat_history"
+  val TIMER_HISTORY = "timer_history"
   val MESSAGE = "message"
   val SET_BY_USER_ID = "set_by_user_id"
   val POLLS = "polls"

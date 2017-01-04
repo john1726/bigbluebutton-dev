@@ -123,6 +123,8 @@ object MessageNames {
   val GET_CHAT_HISTORY_REPLY = "get_chat_history_reply"
   val SEND_PUBLIC_CHAT_MESSAGE = "send_public_chat_message"
   val SEND_PRIVATE_CHAT_MESSAGE = "send_private_chat_message"
+  val GET_TIMER_HISTORY_REPLY = "get_timer_history_reply"
+  val SEND_PUBLIC_TIMER_MESSAGE = "send_public_timer_message"
   val GET_CURRENT_LAYOUT_REPLY = "get_current_layout_reply"
   val SET_LAYOUT_REPLY = "set_layout_reply"
   val BROADCAST_LAYOUT_REPLY = "broadcast_layout_reply"

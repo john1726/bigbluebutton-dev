@@ -8,8 +8,8 @@ import org.bigbluebutton.core.api._
 import java.util.concurrent.TimeUnit
 import org.bigbluebutton.core.util._
 import scala.concurrent.duration._
-import org.bigbluebutton.core.apps.{ PollApp, UsersApp, PresentationApp, LayoutApp, ChatApp, WhiteboardApp }
-import org.bigbluebutton.core.apps.{ ChatModel, LayoutModel, UsersModel, PollModel, WhiteboardModel }
+import org.bigbluebutton.core.apps.{ PollApp, UsersApp, PresentationApp, LayoutApp, ChatApp, WhiteboardApp, TimerApp }
+import org.bigbluebutton.core.apps.{ ChatModel, LayoutModel, UsersModel, PollModel, WhiteboardModel, TimerModel }
 import org.bigbluebutton.core.apps.PresentationModel
 
 object MeetingActor {
@@ -19,10 +19,11 @@ object MeetingActor {
 
 class MeetingActor(val mProps: MeetingProperties, val outGW: OutMessageGateway)
     extends Actor with UsersApp with PresentationApp
-    with LayoutApp with ChatApp with WhiteboardApp with PollApp
+    with LayoutApp with ChatApp with TimerApp with WhiteboardApp with PollApp
     with ActorLogging {
 
   val chatModel = new ChatModel()
+  val timerModel = new TimerModel()
   val layoutModel = new LayoutModel()
   val meetingModel = new MeetingModel()
   val usersModel = new UsersModel()
@@ -100,6 +101,10 @@ class MeetingActor(val mProps: MeetingProperties, val outGW: OutMessageGateway)
       handleSendPublicMessageRequest(msg)
     case msg: SendPrivateMessageRequest =>
       handleSendPrivateMessageRequest(msg)
+    case msg: GetTimerHistoryRequest =>
+      handleGetTimerHistoryRequest(msg)
+    case msg: SendPublicTimerMessageRequest =>
+      handleSendPublicTimerMessageRequest(msg)
     case msg: UserConnectedToGlobalAudio =>
       handleUserConnectedToGlobalAudio(msg)
     case msg: UserDisconnectedFromGlobalAudio =>

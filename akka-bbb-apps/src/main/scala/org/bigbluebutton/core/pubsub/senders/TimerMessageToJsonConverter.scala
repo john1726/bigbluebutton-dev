@@ -20,7 +20,6 @@ object TimerMessageToJsonConverter {
     res += "timer_type" -> msg.get(TimerKeyUtil.TIMER_TYPE).getOrElse(UNKNOWN)
     res += "from_userid" -> msg.get(TimerKeyUtil.FROM_USERID).getOrElse(UNKNOWN)
     res += "from_username" -> msg.get(TimerKeyUtil.FROM_USERNAME).getOrElse(UNKNOWN)
-    res += "from_color" -> msg.get(TimerKeyUtil.FROM_COLOR).getOrElse(UNKNOWN)
     res += "from_time" -> msg.get(TimerKeyUtil.FROM_TIME).getOrElse(UNKNOWN)
     res += "from_tz_offset" -> msg.get(TimerKeyUtil.FROM_TZ_OFFSET).getOrElse(UNKNOWN)
     res += "to_userid" -> msg.get(TimerKeyUtil.TO_USERID).getOrElse(UNKNOWN)

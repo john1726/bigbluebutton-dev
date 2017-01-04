@@ -74,6 +74,12 @@ case class SendPublicMessageEvent(meetingID: String, recorded: Boolean, requeste
 case class SendPrivateMessageEvent(meetingID: String, recorded: Boolean, requesterID: String,
   message: Map[String, String]) extends IOutMessage
 
+// Timer
+case class GetTimerHistoryReply(meetingID: String, recorded: Boolean, requesterID: String,
+  replyTo: String, history: Array[Map[String, String]]) extends IOutMessage
+case class SendPublicTimerMessageEvent(meetingID: String, recorded: Boolean, requesterID: String,
+  message: Map[String, String]) extends IOutMessage
+
 // Layout
 case class GetCurrentLayoutReply(meetingID: String, recorded: Boolean, requesterID: String, layoutID: String,
   locked: Boolean, setByUserID: String) extends IOutMessage
